@@ -1,0 +1,72 @@
+<div class="container-fluid">
+    <div class="row">
+        <h4>Settings</h4>
+    </div>
+    <div class="row">
+        <div class="col-3 nopadding" style="background-color:#F3F3F3;padding: 0;margin: 0;">
+            <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-1">
+                                    <i class="fas fa-cog" style="color:#89D4DF"></i>
+                                </div>
+                                <a class="button" onclick="showConfigSystem('/config_general')" href="#"> 
+                                    <div  class="col-11">General</div> 
+                                </a>
+                            </div>
+                            
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <div class="row">
+                                
+                                <div class="col-1">
+                                    <i class="fas fa-users" style="color:#FABA8F"></i>
+                                </div>
+                                <a class="button" onclick="showConfigSystem('/config_competitors')" href="#"> 
+                                    <div  class="col-11">Competitors</div>
+                                </a>
+                                
+                            </div>
+                                    
+                        </td>
+                        </tr>
+                        <tr>
+                        <td>
+                            <div class="row">
+                                    <div class="col-1">
+                                        <i class="fas fa-chevron-up" style="color:violet"></i>
+                                    </div>
+                                    <a class="button" onclick="showConfigSystem('/config_negotiation')" href="#"> 
+                                        <div class="col-11">Negotiation</div>
+                                    </a>
+                            </div>
+                        </td>
+                        </tr>
+                    </tbody>
+            </table>
+        </div>
+        <div id="settingContent" class="col-9 nopadding" style="background-color:white; padding: 0;margin: 0;">
+            {% include '_config_system_basic.html' %}
+        </div>
+    </div>
+
+</div>
+<script>
+    function showConfigSystem(url){
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'html',
+            success: function(data){
+                $("#settingContent").html(data);                
+            },
+            error: function(data){
+                $("#settingContent").html("system config load failure!");
+            }
+        });
+    }
+</script>

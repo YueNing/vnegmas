@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <div class="row">
+            <h4> <span class="badge badge-secondary">{{ title | safe}}</span></h4>
+    </div>
+    <div class="row">
+        <form action = "/saveSystemConfig" method = "POST">
+                {% for key in content %}
+                    {% if content[key] == "false" or content[key] == "true" %}
+                        <div class="form-group row">
+                            <label for="exampleFormControlInput1" class="col-sm-5 col-form-label"> {{ key }} </label>
+                            <div class="custom-control custom-checkbox col-sm-7">
+                                {% if content[key]=="true" %}
+                                    <input type="checkbox" class="custom-control-input" id="{{ key }}" name="{{key}}" checked>
+                                {% else %}
+                                    <input type="checkbox" class="custom-control-input" id="{{ key }}" name="{{key}}">
+                                {% endif %}
+                                <label class="custom-control-label" for="{{ key }}">{{ key }}</label>
+                            </div>
+                        </div>
+                    {% elif key == "competitors" or key=="negotiations" or key=="parallelism" %}
+                    <div class="form-group row">
+                        <label for="exampleFormControlInput1" class="col-sm-5 col-form-label"> {{ key }} </label>
+                        <div class="col-sm-7">
+                            {% if key=="parallelism" or key=="negotiations"%}
+                                <select name='{{key}}' class="custom-select">
+                            {% else %}
+                                <select name='{{key}}' class="custom-select" multiple>
+                            {% endif %}
+                                {% for factory_manager in content[key]%}
+                                    <option value="{{ factory_manager }}">{{ factory_manager }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="form-group row">
+                            <label for="exampleFormControlInput1" class="col-sm-5 col-form-label"> {{ key }} </label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="{{ key }}" name='{{ key }}' value="{{ content[key] }}" placeholder="{{ content[key] }}">
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            <p><input type = "submit" class="btn btn-primary" value = "submit" /></p>
+        </form>
+    </div>
+</div>

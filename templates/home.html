@@ -1,0 +1,18 @@
+<div id="_content">
+<h4> This is a system used for visualization of Negmas Simulator</h4>
+</div>
+<script>
+        function showAtRight(url){
+            $.ajax({
+                type:'GET',
+                url:url,
+                dataType:"html",
+                success:function(data){
+                    $("#_content").html(data);
+                },
+                error:function(){
+                    $("#_content").html("get page data failure!");
+                }
+            });
+        }
+</script>

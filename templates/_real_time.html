@@ -1,0 +1,243 @@
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2">
+                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-center">Running Time</div>
+                            <div class="card-body">
+                                <h4 align="center" id="runningtime" class="card-title">Info card title</h4>
+                                <!-- <span class="card-text">Some </span> -->
+                            </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-center">Current Step</div>
+                            <div class="card-body">
+                                <h4 align="center" id="current_step" class="card-title">Info card title</h4>
+                                <!-- <span class="card-text"> </span> -->
+                            </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-center">Total Market Size</div>
+                            <div class="card-body">
+                                <h4 align="center" class="card-title" id="total_market_size">Info card title</h4>
+                                <!-- <span class="card-text"></span> -->
+                            </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-center">World name now</div>
+                            <div class="card-body center">
+                                <h4 align="center" id="worldname" class="card-title">Info card title</h4>
+                                <!-- <span class="card-text"></span> -->
+                            </div>
+                </div>
+            </div>
+            <div class="col-4">
+                    <div class="card text-white bg-info mb-3" style="max-width: 36rem;">
+                            <div class="card-header text-center">World Description</div>
+                                <div class="card-body">
+                                    <h4 class="card-title">Info card title</h4>
+                                    <!-- <span class="card-text">Some </span> -->
+                                </div>
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <div id="draggable" class="card">
+                    <div class="card-header alert-dark">
+                        Graph-Negmas Contract Signed
+                    </div>
+                    <div class="card-body">
+                        <div id="graph" style="width: 100%; min-height: 400px"></div>
+                    </div>
+                </div>
+            </div>
+            <div  class="col-5">
+                    <div class="card">
+                            <div class="card-header alert-dark">
+                                Process
+                            </div>
+                            <div class="card-body">
+                                <div id="liquid" style="width: 100%; min-height: 400px"></div>                                    
+                            </div>
+                    </div>
+            </div>
+            <div class="col-2">
+                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Negmas</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Info card title</h5>
+                            <span class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</span>
+                        </div>
+                </div>
+                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Negmas</div>
+                        <div class="card-body">
+                            <h5 class="card-title">System card title</h5>
+                            <span class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</span>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                    <div class="card">
+                            <div class="card-header alert-dark">
+                                Negmas-Agents Activation Level
+                            </div>
+                            <div class="card-body">
+                                <div id="activation" style="width: 100%; min-height: 400px">                                                                      
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div  class="col">
+                    <div class="card">
+                            <div class="card-header alert-dark">
+                                    test 
+                            </div>
+                            <div class="card-body">
+                                <div id="grid" style="width: 100%; min-height: 400px"> </div>                                                                                                       
+                            </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // $('#draggable').draggable();
+        function run(url){
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                success: function(data){
+                    console.log(data);
+                },
+                error: function(data){
+                    console.log('receive data failure');
+                }
+            });
+        }
+    </script>
+    <script>
+        var chart = echarts.init(document.getElementById('graph'), 'white', {renderer: 'canvas'});
+        var liquid_chart = echarts.init(document.getElementById('liquid'), 'white', {renderer: 'canvas'});
+        var grid_chart = echarts.init(document.getElementById('grid'), 'white', {renderer: 'canvas'});
+        
+        // var chart3d = echarts.init(document.getElementById('activation'), 'white', {renderer: 'canvas'});
+        var old_data = [];
+        $(
+            function () {
+                getData(chart);
+                getLiquidData(liquid_chart);
+                setInterval(RealTimeDynamicData, 1000);
+                getGridData(grid_chart);
+                getBar3dData();
+                // setInterval(getDynamicData, 1000);
+            }
+        );
+
+        function getData() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/GraphChart",
+                dataType: "json",
+                success: function (result) {
+                    chart.setOption(result);
+                    old_links = chart.getOption().series[0].links;
+                }
+            });
+        }
+
+        function getDynamicData() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/GraphDynamicData",
+                dataType: "json",
+                success: function (result) {
+                    for (var edge in result){
+                        old_links.push({source:result[edge].source, target:result[edge].target});
+                    }
+                    chart.setOption({
+                        series: [{links: old_links}]
+                    });
+                }
+            });
+        }
+
+        function getLiquidData() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/Liquid",
+                dataType: "json",
+                success: function (result) {
+                    liquid_chart.setOption(result);
+                    old_data_liquid = liquid_chart.getOption().series[0].data;
+                    console.log("old_data_liquid"+old_data_liquid)
+                }
+            });
+        }
+
+        function RealTimeDynamicData(){
+            $.ajax({
+                type: "GET",
+                url: '/RealTimeDynamicData',
+                dataType: 'json',
+                success: function (result){
+                    console.log(result);
+                    $("#worldname").html(result.worldname);
+                    $("#current_step").html(result.current_step);
+                    $("#runningtime").html(result.runningtime)
+                    for (var edge in result.graph_result){
+                        old_links.push({source:result.graph_result[edge].source, target:result.graph_result[edge].target});
+                    }
+                    chart.setOption({
+                        series: [{links: old_links}]
+                    });
+                    old_data_liquid = result.liquid_chart_dyn
+                    // for (var data in result.liquid_chart_dyn){
+                    //     old_data_liquid.push(data);
+                    // }
+                    liquid_chart.setOption({
+                        series: [{data: old_data_liquid}]
+                    });
+                },
+                error: function (result){
+                    console.log('real time dynamic data failure!')
+                }
+            });
+
+        }
+        function getGridData() {
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/Grid",
+                dataType: "json",
+                success: function (result) {
+                    grid_chart.setOption(result);
+                    // old_data = chart.getOption().series[0].data;
+                }
+            });
+        }
+
+        function getBar3dData() {
+            $.ajax({
+                type: "GET", 
+                url: "http://127.0.0.1:5000/Bar3dData",
+                dataType: "json",
+                success: function (result) {
+                    var chart3d = echarts.init(document.getElementById('activation'),  'white', {renderer: 'canvas'});
+                    // console.log(result)
+                    // chart3d.setOption({
+                    //     series: [{type:result.type}]
+                    // });
+                    chart3d.setOption(result)
+                }
+            });
+        }
+    </script>

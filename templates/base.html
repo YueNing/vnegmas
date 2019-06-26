@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Negmas System</title>
+    <!-- for code mirror -->
+    <!-- <link rel=stylesheet href="{{ url_for('static', filename='resources/codemirror/doc/docs.css') }}"> -->
+    <link rel=stylesheet href="{{ url_for('static', filename='resources/codemirror/lib/codemirror.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='resources/codemirror/addon/fold/foldgutter.css') }}" />
+    <script src="{{ url_for('static', filename='resources/codemirror/lib/codemirror.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/addon/fold/foldcode.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/addon/fold/foldgutter.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/addon/fold/brace-fold.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/addon/fold/xml-fold.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/addon/fold/indent-fold.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/addon/fold/markdown-fold.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/addon/fold/comment-fold.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/mode/javascript/javascript.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/mode/xml/xml.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/mode/css/css.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/mode/htmlmixed/htmlmixed.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/mode/python/python.js') }}"></script>
+    <script src="{{ url_for('static', filename='resources/codemirror/mode/markdown/markdown.js') }}"></script>
+    <style>
+      .some-css {
+        color: red;
+        line-height: 2;
+      }
+    </style>
+  
+
+
+    <style>
+      .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+    </style>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='resources/css/navbar.css') }}">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/default.min.css">
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts-liquidfill.min.js"></script>
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.2/css/mdb.min.css" rel="stylesheet"> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.2/js/mdb.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body style="background-color:#F3F3F3;">
+    {% include "sidebar.html" %}
+
+    {% block content %}
+    {% endblock content %}
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <a href="/"><h3>Negmas</h3>
+            <strong>NM</strong></a>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li id="sidebar_config" class="active">
+                <a href="#configmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-cog"></i>
+                    Config
+                </a>
+                <ul class="collapse list-unstyled" id="configmenu">
+                    <li>
+                        <a onclick="showAtRight('/my')" href="#">My</a>
+                    </li>
+                    <li>
+                        <a onclick="showAtRight('/system')" href="#">System</a>
+                    </li>
+                </ul>
+            </li>
+        
+            <li id="sidebar_visualization">
+                <a  href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-chart-bar"></i>
+                    Visualization
+                </a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a onclick="showAtRight('/real_time')" href="#">Real Time</a>
+                    </li>
+                    <li>
+                        <a href="#">Offline</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li id="sidebar_About">
+                <a href="#">
+                    <i class="fas fa-briefcase"></i>
+                    About
+                </a>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-copy"></i>
+                    Pages
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="#">Page 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 2</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="/portfolio">
+                    <i class="fas fa-image"></i>
+                    Portfolio
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/yuening">
+                    <i class="fas fa-paper-plane"></i>
+                    Contact
+                </a>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled CTAs">
+            <li>
+                <a href="https://github.com/yasserfarouk/negmas" class="link">Negmas Github Source</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-align-left"></i>
+                    <span>Toggle Sidebar</span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-align-justify"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" onclick="run('/run')" href="#">Run</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
