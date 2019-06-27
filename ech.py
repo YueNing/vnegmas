@@ -16,6 +16,7 @@ from backend.api import draw
 from backend.src import nnegmas, web
 import datetime
 from backend.src.nnegmas import negmas_draw
+from backend.api import configs
 
 """
 mode:   'online_memory':  receive the data when run the simulator and at the same time update the graph (memory mode)
@@ -31,7 +32,7 @@ mode = 'debug'
 
 class ConfigSetUp:
     def __init__(self):
-        self._config = web.get_config('backend/src/web/config.ini')
+        self._config = configs.get_web_config()
         self._init_my_config()
         self._init_system_config()
     

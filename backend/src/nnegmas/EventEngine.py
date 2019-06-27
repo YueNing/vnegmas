@@ -11,7 +11,8 @@ from . import glovar
 import itertools
 # import sys 
 # sys.path.append('../')
-from .. import configs
+from ...api import configs
+
 class EventEngine(object):
     """
         Base class used to manager a public class
