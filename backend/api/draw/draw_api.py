@@ -1,5 +1,11 @@
 import sys, os
-from ...src.draw import _graph_contracted_signed, _liquid_process, _bar3d_agent_activation
+from ...src.draw import (
+    _graph_contracted_signed, 
+    _liquid_process, 
+    _bar3d_agent_activation, 
+    _bar_product_produce,
+    _grid_buyer_seller
+)
 from pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid
 
 def graph_contracted_signed(config:dict=None, nodes: list=None) -> Graph:
@@ -14,6 +20,10 @@ def bar3d_agent_activation():
     c = _bar3d_agent_activation()
     return c
 
-def grid_breach_contract_balance():
-    c: Grid = _grid_breach_contract_balance()
+def bar_product_produce():
+    c: Bar = _bar_product_produce()
+    return c
+
+def grid_buyer_seller():
+    c: Grid = _grid_buyer_seller()
     return c

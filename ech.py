@@ -8,7 +8,6 @@ from pyecharts.charts import Geo
 from pyecharts.commons.types import Numeric, Optional, Sequence, Union
 from pyecharts.globals import ChartType, SymbolType
 from pyecharts.components import Table
-from test import grid_horizontal
 from flask.json import jsonify
 from flask import Flask, render_template, request
 from app import FlaskAppWrapper
@@ -115,10 +114,11 @@ class DrawPyechart(object):
         self.a.add_endpoint(rule='/real_time', endpoint='real_time', view_func=self.real_time)
         self.a.add_endpoint(rule='/GraphChart', endpoint='GraphChart', view_func=self._graph_with_opts)
         self.a.add_endpoint(rule='/Liquid', endpoint='Liquid', view_func=self._get_liquid_chart)
+        self.a.add_endpoint(rule='/BarProcutProduce', endpoint='BarProcutProduce', view_func=self._get_bar_product_produce)
         self.a.add_endpoint(rule='/RealTimeDynamicData', endpoint='RealTimeDynamicData', view_func=self.dynamic_real_time)
         # self.a.add_endpoint(rule='/GraphDynamicData', endpoint='GraphDynamicData', view_func=self._graph_with_opts_dyn)
         self.a.add_endpoint(rule='/Bar3dData', endpoint='Bar3dData', view_func=self._bar3d_with_opts)
-        self.a.add_endpoint(rule='/Grid', endpoint='Grid', view_func=self._test_grid)
+        self.a.add_endpoint(rule='/Grid', endpoint='Grid', view_func=self._get_buyer_seller)
         self.a.add_endpoint(rule='/run', endpoint='run', view_func=self._run_negmas)
         self.a.add_endpoint(rule='/saveSystemConfig', endpoint='savesystemconfig', view_func=self.save_system_config, methods=['POST', 'GET'])
 
@@ -231,9 +231,23 @@ class DrawPyechart(object):
         return jsonify({'message':'set run task'})
 
     @staticmethod
+    def _get_bar_product_produce():
+        c = draw.bar_product_produce()
+        return c.dump_options()
+    
+    @staticmethod
     def _get_liquid_chart():
         c = draw.liquid_process()
         return c.dump_options()
+    
+    @staticmethod
+    def _bar3d_with_opts():
+        c = draw.bar3d_agent_activation()
+        return c.dump_options()
+    
+    @staticmethod
+    def _get_buyer_seller():
+        return draw.grid_buyer_seller().dump_options()
     
     def _get_layer_sizes(self):
         return [len(node) for node in self.node_name]
@@ -259,12 +273,6 @@ class DrawPyechart(object):
         c = draw.graph_contracted_signed(config, self.config.graph.nodes)
         return c.dump_options()
     
-    @staticmethod
-    def _bar3d_with_opts():
-        c = draw.bar3d_agent_activation()
-        return c.dump_options()
-        # return jsonify({'type':'line3d'})
-
     def init_bar3d_base(self):
         from example.commons import Faker
         from pyecharts import options as opts
@@ -308,10 +316,6 @@ class DrawPyechart(object):
         # print('dynamic data {}'.format(nnegmas.glovar.world_recall_reuslt_dict))
         # return jsonify(result)
         return result
-
-    @staticmethod
-    def _test_grid():
-        return test_grid().dump_options()
 
     def _init_configSetup(self):
         self.configSetUp = ConfigSetUp()
@@ -465,10 +469,6 @@ def table_base() -> Table:
                 title_style={"style": "font-size: 18px; font-weight:bold;"})
     )
     return table
-
-
-def test_grid() -> Grid:
-    return grid_horizontal()
 
 if __name__ == '__main__':
     dp = DrawPyechart(name='DrawPyecharts')

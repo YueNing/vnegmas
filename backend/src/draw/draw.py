@@ -1,7 +1,9 @@
-from pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid
+from pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid, Bar, Line
 from pyecharts import options as opts
+from pyecharts.commons.utils import JsCode
+from networkx import DiGraph
 
-def _graph_contracted_signed(config:dict=None, nodes:list=None) -> Graph:
+def _graph_contracted_signed(config:dict=None, nodes:DiGraph=None) -> Graph:
     nodes_show = [opts.GraphNode(name=node, 
             x=nodes[node]['pos'][0], 
             y=nodes[node]['pos'][1], 
@@ -27,16 +29,47 @@ def _graph_contracted_signed(config:dict=None, nodes:list=None) -> Graph:
                         emphasis_itemstyle_opts=config['emphasis_linestyleopts'] 
                             if 'emphasis_linestyleopts' in config else None
             )
-        .set_global_opts(title_opts=opts.TitleOpts(title=config['title'] if 'title' in config else ""))
+        .set_global_opts(
+            title_opts=opts.TitleOpts(
+                title=config['title'] if 'title' in config else ""
+            ),
+            legend_opts=opts.LegendOpts(
+                orient='vertical',
+                type_="scroll",
+                pos_left="right")
+        )
     )
     return c
 
 def _liquid_process() -> Liquid:
     c = (
         Liquid()
-        .add("lq", [0.0, 0.0])
+        .add("lq", [0.0, 0.0],
+            label_opts=opts.LabelOpts(
+                font_size=12,
+                position="inside",
+            ),)
         .set_global_opts(title_opts=opts.TitleOpts(title=""))
     )
+    return c
+
+def _bar_product_produce(config:dict=None) -> Bar:
+    c = (
+            Bar()
+            .add_xaxis(['Product 1', 'Product 2', 'Product 3', 'Product 4', 'Product 5', 'Product 6'])
+            .add_yaxis("Factory 1", [10 ,10, 10, 10, 50, 10], stack="stack1")
+            .add_yaxis("Factory 2", [10 ,10, 10, 100, 100, 10], stack="stack1")
+            .add_yaxis("Factory 3", [100 ,10, 10, 10, 50, 10], stack="stack1")
+            .add_yaxis("Factory 4", [10 ,10, 100, 10, 50, 10], stack="stack1")
+            .add_yaxis("Factory 5", [10 ,100, 10, 10, 50, 10], stack="stack1")
+            .add_yaxis("Factory 6", [10 ,10, 10, 10, 50, 10], stack="stack1")
+            .set_global_opts(
+                title_opts=opts.TitleOpts(title=""),
+                legend_opts=opts.LegendOpts(orient='vertical',
+                type_="scroll",
+                pos_left="right")
+            )
+        )
     return c
 
 def _bar3d_agent_activation() -> Bar3D:
@@ -61,6 +94,34 @@ def _bar3d_agent_activation() -> Bar3D:
     )
     return c
 
-def _grid_breach_contract_balance() -> Grid:
+def _grid_buyer_seller() -> Grid:
     c: Grid = None
-    return c
+    bar = (
+        Bar()
+        .add_xaxis(['Factory 1', 'Factory 2', 'Factory 3', 'Factory 4', 'Factory 5', 'Factory 6'])
+        .add_yaxis("product 1", [10 ,100, 10, 10, 50, 10], stack="buyer")
+        .add_yaxis("product 2", [10 ,100, 10, 10, 50, 10], stack="buyer")
+        .add_yaxis("product 3", [10 ,100, 10, 10, 50, 10], stack="buyer")
+        .add_yaxis("product 4", [10 ,100, 10, 10, 50, 10], stack="buyer")
+        .add_yaxis("product 1", [10 ,10, 10, 10, 50, 10],  stack="seller")
+        .add_yaxis("product 2", [10 ,10, 10, 10, 50, 10],  stack="seller")
+        .add_yaxis("product 3", [10 ,10, 10, 10, 50, 10],  stack="seller")
+        .add_yaxis("product 4", [10 ,10, 10, 10, 50, 10],  stack="seller")
+    )
+    line = (
+        Line()
+        .add_xaxis(['Factory 1', 'Factory 2', 'Factory 3', 'Factory 4', 'Factory 5', 'Factory 6'])
+        .add_yaxis("Buyer Volume", [10*4 ,100*4, 10*4, 10*4, 50*4, 10*4], linestyle_opts=opts.LineStyleOpts(width=2))
+        .add_yaxis("Seller Volume", [10*4 ,10*4, 10*4, 10*4, 50*4, 10*4], linestyle_opts=opts.LineStyleOpts(width=2))
+    )
+    # c = (
+    #     Grid()
+    #     .add(buyer, grid_opts=opts.GridOpts(pos_left="55%"))
+    #     .add(seller, grid_opts=opts.GridOpts(pos_right="55%"))
+    # )
+    bar.overlap(line)
+    return bar
+
+if __name__ == "__main__":
+   c =  _liquid_process()
+   c.render()
