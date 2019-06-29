@@ -18,17 +18,17 @@
                             </div>
                 </div>
             </div>
-            <div class="col-2">
-                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+            <div class="col-3">
+                <div class="card text-white bg-info mb-3" style="max-width: 27rem;">
                         <div class="card-header text-center">Total Market Size</div>
                             <div class="card-body">
-                                <h5 align="center" class="card-title" id="total_market_size">Info card title</h5>
+                                <h5 align="center" class="card-title" id="market_size_total">Info card title</h5>
                                 <!-- <span class="card-text"></span> -->
                             </div>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card text-white bg-info mb-3" style="max-width: 36rem;">
+            <div class="col-3">
+                <div class="card text-white bg-info mb-3" style="max-width: 27rem;">
                         <div class="card-header text-center">World name now</div>
                             <div class="card-body center">
                                 <h5 align="center" id="worldname" class="card-title">Info card title</h5>
@@ -190,7 +190,9 @@
                     console.log(result);
                     $("#worldname").html(result.worldname);
                     $("#current_step").html(result.current_step);
-                    $("#runningtime").html(result.runningtime)
+                    $("#runningtime").html(result.runningtime);
+                    $("#market_size_total").html(result.market_size_total); 
+
                     for (var edge in result.graph_result){
                         old_links.push({source:result.graph_result[edge].source, target:result.graph_result[edge].target});
                     }
