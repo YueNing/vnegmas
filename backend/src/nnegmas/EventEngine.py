@@ -126,7 +126,7 @@ class Public_NegmasAccount:
                                             'consumers':consumers,
                                             'miners': miners,
                                             'contracts':contracts,
-                                            'market_size_total':world._stats['_market_size_total']
+                                            'market_size_total':world._stats['_market_size_total'][-1]
                                         }
         return public_dic
 

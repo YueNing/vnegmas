@@ -1,5 +1,6 @@
 import json
 import os
+import datetime
 from dataclasses import dataclass
 
 from pyecharts import options as opts
@@ -8,15 +9,16 @@ from pyecharts.charts import Geo
 from pyecharts.commons.types import Numeric, Optional, Sequence, Union
 from pyecharts.globals import ChartType, SymbolType
 from pyecharts.components import Table
+from networkx import DiGraph
+
 from flask.json import jsonify
 from flask import Flask, render_template, request
 from app import FlaskAppWrapper
-from networkx import DiGraph
+
 from backend.api import draw
-from backend.src import nnegmas, web
-import datetime
-from backend.src.nnegmas import negmas_draw
-from backend.api import configs
+from backend.api import nnegmas
+from backend.api.nnegmas import negmas_draw
+from backend.api import web
 
 """
 mode:   'online_memory':  receive the data when run the simulator and at the same time update the graph (memory mode)
@@ -32,7 +34,7 @@ mode = 'debug'
 
 class ConfigSetUp:
     def __init__(self):
-        self._config = configs.get_web_config()
+        self._config = web.get_web_config()
         self._init_my_config()
         self._init_system_config()
     
@@ -191,12 +193,12 @@ class DrawPyechart(object):
             if data[0] == self.current_step:
                 result = update_key_value(self.result)
                 graph_result = [{}]
-                worldname = self.worldname
                 self.runningtime = datetime.datetime.now() - self.starttime
             else:
                 step = data[0]
                 contracts = data[1]
                 self.worldname = data[2]
+                self.market_size_total = data[3]
                 graph_result = send_result(contracts=contracts)
                 # print(graph_result)
                 self.current_step = data[0]
@@ -211,16 +213,18 @@ class DrawPyechart(object):
             self.runningtime = -1
             self.worldname = 'None'
             self.current_step = -1
+            self.market_size_total = -1
         result['graph_result'] = graph_result
         result['worldname'] = self.worldname
+        result['market_size_total'] = self.market_size_total
         result['current_step'] = self.current_step
         result['runningtime'] = str(self.runningtime)
         return jsonify(result)
     
     def _run_negmas(self):
         #TODO set up negmas task
-        from backend.src import nnegmas
-        from multiprocessing import Manager, Process, Queue
+        # from backend.src import nnegmas
+        from multiprocessing import Process
 
         self.mode  = 'online_memory'
         self.starttime = datetime.datetime.now()

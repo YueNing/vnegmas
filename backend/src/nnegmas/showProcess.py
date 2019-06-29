@@ -52,7 +52,8 @@ class ShowProcess:
             consumers = self._world_recall_reuslt_dict['consumers']
             miners = self._world_recall_reuslt_dict['miners']
             contracts = self._world_recall_reuslt_dict['contracts']
-            yield [step_information, contracts, scmlworld]
+            market_size_total = self._world_recall_reuslt_dict['market_size_total']
+            yield [step_information, contracts, scmlworld, market_size_total]
             step +=1
 
     def get_nodes(self):
