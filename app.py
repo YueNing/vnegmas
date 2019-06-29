@@ -3,10 +3,6 @@ from random import randrange
 from flask.json import jsonify
 from flask import Flask, render_template, Response
 
-from pyecharts import options as opts
-from pyecharts.charts import Line
-# from ech import liquid_base, graph_with_opts
-
 app = Flask(__name__, static_folder="templates")
 
 class EndpointAction(object):

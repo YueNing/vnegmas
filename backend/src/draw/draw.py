@@ -1,6 +1,6 @@
-from pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid, Bar, Line
-from pyecharts import options as opts
-from pyecharts.commons.utils import JsCode
+from ..pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid, Bar, Line
+from ..pyecharts import options as opts
+from ..pyecharts.commons.utils import JsCode
 from networkx import DiGraph
 
 def _graph_contracted_signed(config:dict=None, nodes:DiGraph=None) -> Graph:
@@ -74,17 +74,20 @@ def _bar_product_produce(config:dict=None) -> Bar:
 
 def _bar3d_agent_activation() -> Bar3D:
     import random
-    from example.commons import Faker
-    from pyecharts import options as opts
-    from pyecharts.charts import Bar3D
-    data = [(i, j, random.randint(0, 12)) for i in range(6) for j in range(24)]
+    from ..pyecharts import options as opts
+    from ..pyecharts.charts import Bar3D
+    step = (
+        "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24".split()
+    )
+    factories = "factory_1 factory_2 factory_3 factory_4 factory_5 factory_6 factory_7".split()
+    data = [(i, j, random.randint(0, 12)) for i in range(7) for j in range(24)]
     c = (
         Bar3D()
         .add(
             "",
             [[d[1], d[0], d[2]] for d in data],
-            xaxis3d_opts=opts.Axis3DOpts(Faker.clock, type_="category"),
-            yaxis3d_opts=opts.Axis3DOpts(Faker.week_en, type_="category"),
+            xaxis3d_opts=opts.Axis3DOpts(step, type_="category"),
+            yaxis3d_opts=opts.Axis3DOpts(factories, type_="category"),
             zaxis3d_opts=opts.Axis3DOpts(type_="value"),
         )
         .set_global_opts(

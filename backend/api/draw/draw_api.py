@@ -6,7 +6,7 @@ from ...src.draw import (
     _bar_product_produce,
     _grid_buyer_seller
 )
-from pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid
+from ...src.pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid
 
 def graph_contracted_signed(config:dict=None, nodes: list=None) -> Graph:
     c = _graph_contracted_signed(config, nodes)

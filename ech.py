@@ -3,12 +3,12 @@ import os
 import datetime
 from dataclasses import dataclass
 
-from pyecharts import options as opts
-from pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid
-from pyecharts.charts import Geo
-from pyecharts.commons.types import Numeric, Optional, Sequence, Union
-from pyecharts.globals import ChartType, SymbolType
-from pyecharts.components import Table
+from backend.src.pyecharts import options as opts
+from backend.src.pyecharts.charts import Graph, Page, Liquid, Bar3D, Grid
+from backend.src.pyecharts.charts import Geo
+from backend.src.pyecharts.commons.types import Numeric, Optional, Sequence, Union
+from backend.src.pyecharts.globals import ChartType, SymbolType
+from backend.src.pyecharts.components import Table
 from networkx import DiGraph
 
 from flask.json import jsonify
