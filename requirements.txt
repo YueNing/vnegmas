@@ -1,0 +1,5 @@
+negmas>=0.2.25
+flask>=1.0.3
+networkx>=2.3
+future>=0.17.1
+prettytable>=0.7.2
