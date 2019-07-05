@@ -1,12 +1,13 @@
 from __future__ import absolute_import
+
+import os
 import unittest
+
 import dynetx as dn
 from dynetx.readwrite import json_graph
-import os
 
 
 class ReadWriteTestCase(unittest.TestCase):
-
     def test_snapshots_interactions(self):
         g = dn.DynGraph()
         g.add_interaction(1, 2, 2)
@@ -47,7 +48,9 @@ class ReadWriteTestCase(unittest.TestCase):
         g.add_interaction(1, 2, 18)
         g.add_interaction(1, 2, 19)
         dn.write_snapshots(g, "test.txt", delimiter=" ")
-        h = dn.read_snapshots("test.txt", directed=True, nodetype=int, timestamptype=int)
+        h = dn.read_snapshots(
+            "test.txt", directed=True, nodetype=int, timestamptype=int
+        )
         self.assertEqual(g.number_of_interactions(), h.number_of_interactions())
         self.assertEqual(list(g.stream_interactions()), list(h.stream_interactions()))
         os.remove("test.txt")
@@ -75,7 +78,9 @@ class ReadWriteTestCase(unittest.TestCase):
         g.add_interaction(1, 2, 18)
         g.add_interaction(1, 2, 19)
         dn.write_interactions(g, "test2.txt", delimiter=" ")
-        h = dn.read_interactions("test2.txt", directed=True, nodetype=int, timestamptype=int)
+        h = dn.read_interactions(
+            "test2.txt", directed=True, nodetype=int, timestamptype=int
+        )
         self.assertEqual(list(g.stream_interactions()), list(h.stream_interactions()))
         self.assertEqual(g.number_of_interactions(), h.number_of_interactions())
         os.remove("test2.txt")
@@ -89,7 +94,9 @@ class ReadWriteTestCase(unittest.TestCase):
         g.add_interaction(1, 2, 18)
         g.add_interaction(1, 2, 19)
         dn.write_interactions(g, "test3.txt", delimiter=" ")
-        h = dn.read_interactions("test3.txt", nodetype=int, timestamptype=int, keys=True)
+        h = dn.read_interactions(
+            "test3.txt", nodetype=int, timestamptype=int, keys=True
+        )
         # self.assertEqual(list(g.stream_interactions()), list(h.stream_interactions()))
         self.assertEqual(g.number_of_interactions(), h.number_of_interactions())
         os.remove("test3.txt")
@@ -134,5 +141,5 @@ class ReadWriteTestCase(unittest.TestCase):
         self.assertIsInstance(H, dn.DynGraph)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

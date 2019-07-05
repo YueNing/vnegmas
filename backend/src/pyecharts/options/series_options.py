@@ -1,4 +1,5 @@
-from ..commons.types import Any, JSFunc, Numeric, Optional, Sequence, Tuple, Union
+from ..commons.types import (Any, JSFunc, Numeric, Optional, Sequence, Tuple,
+                             Union)
 
 
 class BasicOpts:

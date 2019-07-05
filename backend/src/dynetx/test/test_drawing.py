@@ -1,7 +1,11 @@
-import matplotlib.pyplot as plt
 import sys
-sys.path.append('../../')
+
+import matplotlib.pyplot as plt
+
 import dynetx as dnx
+
+sys.path.append("../../")
+
 # import seaborn as sns
 G = dnx.DynDiGraph(edge_removal=True)
 G.add_node(1)

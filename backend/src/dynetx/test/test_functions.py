@@ -1,9 +1,9 @@
 import unittest
+
 import dynetx as dn
 
 
 class FunctionTestCase(unittest.TestCase):
-
     def test_functions(self):
         g = dn.DynGraph()
         g.add_interaction(1, 2, 2)
@@ -34,9 +34,9 @@ class FunctionTestCase(unittest.TestCase):
         self.assertEqual(dn.density(g), 1.0)
         self.assertEqual(dn.density(g, t=0), 0)
         self.assertEqual(dn.density(g, t=2), 0)
-        self.assertEqual(dn.degree_histogram(g), [0,2])
+        self.assertEqual(dn.degree_histogram(g), [0, 2])
         self.assertEqual(dn.degree_histogram(g, t=0), [2])
-        self.assertEqual(dn.degree_histogram(g, t=2), [0,2])
+        self.assertEqual(dn.degree_histogram(g, t=2), [0, 2])
         self.assertEqual(dn.is_directed(g), False)
 
         dn.add_cycle(g, [1, 2, 3, 4], t=30)
@@ -130,9 +130,9 @@ class FunctionTestCase(unittest.TestCase):
         self.assertEqual(dn.density(g), 0.5)
         self.assertEqual(dn.density(g, t=0), 0)
         self.assertEqual(dn.density(g, t=2), 0)
-        self.assertEqual(dn.degree_histogram(g), [0,2])
+        self.assertEqual(dn.degree_histogram(g), [0, 2])
         self.assertEqual(dn.degree_histogram(g, t=0), [2])
-        self.assertEqual(dn.degree_histogram(g, t=2), [0,2])
+        self.assertEqual(dn.degree_histogram(g, t=2), [0, 2])
         self.assertEqual(dn.is_directed(g), True)
 
         g.add_interaction(1, 2, 30)
@@ -228,5 +228,6 @@ class FunctionTestCase(unittest.TestCase):
         h = g.to_undirected(reciprocal=True)
         self.assertEqual(h.number_of_interactions(), 3)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

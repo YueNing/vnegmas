@@ -1,2 +1,2 @@
 pos = None
-G=None
+G = None

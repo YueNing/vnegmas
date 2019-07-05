@@ -1,6 +1,4 @@
-from . import draw
+from . import draw, nnegmas, web
 from .draw import *
-from . import nnegmas
 from .nnegmas import *
-from . import web
 from .web import *

@@ -1,29 +1,30 @@
 """
     description: multiprocessing event engine
 """
-__author__ = 'naodongbanana'
+__author__ = "naodongbanana"
 
-from multiprocessing import Process, Queue
-from negmas.apps.scml import SCMLWorld
-import time
-from . import glovar
-# import glovar
 import itertools
-# import sys 
-# sys.path.append('../')
+import time
+from multiprocessing import Process, Queue
+
+from negmas.apps.scml import SCMLWorld
+
 from ...api import configs
+from . import glovar
+
 
 class EventEngine(object):
     """
         Base class used to manager a public class
     """
+
     def __init__(self, *args, **kwargs):
         self._eventQueue = Queue()
         self._active = False
         # {'scmlworld':[handler1, handler2]}
         self._handlers = {}
         self._processPool = []
-        self._mainProcess=Process(target=self._run)
+        self._mainProcess = Process(target=self._run)
 
     def _run(self):
         while self._active:
@@ -36,7 +37,7 @@ class EventEngine(object):
     def _process(self, event):
         if event.type in self._handlers:
             for handler in self._handlers[event.type]:
-                p = Process(target=handler, args=(event, ))
+                p = Process(target=handler, args=(event,))
                 self._processPool.append(p)
                 p.start()
 
@@ -62,7 +63,7 @@ class EventEngine(object):
         except KeyError:
             handlerList = []
             self._handlers[type] = handlerList
-        
+
         if handler not in handlerList:
             self._handlers[type].append(handler)
 
@@ -76,20 +77,23 @@ class EventEngine(object):
 
             if not handlerList:
                 del self._handlers[type]
-        
+
         except KeyError:
             pass
 
     def sendEvent(self, event):
         self._eventQueue.put(event)
 
+
 class Event(object):
     """
         Event Class
     """
+
     def __init__(self, type=None, *args, **kwargs):
         self.type = type
         self.dict = {}
+
 
 class Public_NegmasAccount:
     """"
@@ -106,6 +110,7 @@ class Public_NegmasAccount:
         >>> world = 
         >>> publicAcc.processNewStep(Event_Porcess_New_Step, world)
     """
+
     def __init__(self, eventManager):
         self._eventManager = eventManager
         self.scmlWorld = None
@@ -116,29 +121,34 @@ class Public_NegmasAccount:
         consumers = [consumer.name for consumer in world.consumers]
 
         def _contracts():
-            return [(_contract['seller_name'], _contract['buyer_name']) for _contract in world.signed_contracts]
-        
+            return [
+                (_contract["seller_name"], _contract["buyer_name"])
+                for _contract in world.signed_contracts
+            ]
+
         contracts = _contracts()
         _stats = world._stats
-        public_dic =  {'current_step':world.current_step if world.current_step is not None else 0, 
-                                            'scmlworld':world.name if world.name else None,
-                                            'factories_managers': factories_managers, 
-                                            'consumers':consumers,
-                                            'miners': miners,
-                                            'contracts':contracts,
-                                            'market_size_total':world._stats['_market_size_total'][-1]
-                                        }
+        public_dic = {
+            "current_step": world.current_step if world.current_step is not None else 0,
+            "scmlworld": world.name if world.name else None,
+            "factories_managers": factories_managers,
+            "consumers": consumers,
+            "miners": miners,
+            "contracts": contracts,
+            "market_size_total": world._stats["_market_size_total"][-1],
+        }
         return public_dic
 
-    def processNewStep(self, eventType, world:SCMLWorld=None):
+    def processNewStep(self, eventType, world: SCMLWorld = None):
         event = Event(eventType)
         if world is not None:
             event.dict = self._process_world(world)
         else:
-            event.dict['current_step'] = -1
-            event.dict['scmlworld'] = None
+            event.dict["current_step"] = -1
+            event.dict["scmlworld"] = None
         self._eventManager.sendEvent(event)
-        print('send inforamtion about new step')
+        print("send inforamtion about new step")
+
 
 class ListenerTypeOne:
     def __init__(self, username, world_recall_reuslt_dict=None):
@@ -146,14 +156,16 @@ class ListenerTypeOne:
         self._world_recall_reuslt_dict = world_recall_reuslt_dict
 
     def showNewStep(self, event):
-        glovar.step = event.dict['current_step']
-        glovar.scmlworld = event.dict['scmlworld']
+        glovar.step = event.dict["current_step"]
+        glovar.scmlworld = event.dict["scmlworld"]
         if self._world_recall_reuslt_dict is not None:
             for k, value in event.dict.items():
-                self._world_recall_reuslt_dict[k] = value 
-        # print('{} get the result of new step and manager {}'.format(self._username, self._world_recall_reuslt_dict))        
+                self._world_recall_reuslt_dict[k] = value
+        # print('{} get the result of new step and manager {}'.format(self._username, self._world_recall_reuslt_dict))
         # print('plot the result of new step {}'.format(self._world_recall_reuslt_dict['current_step']))
+
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

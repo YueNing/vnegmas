@@ -1,10 +1,11 @@
 from __future__ import absolute_import
+
 import unittest
+
 import dynetx as dn
 
 
 class DynDiGraphTestCase(unittest.TestCase):
-
     def test_dyndigraph_add_interaction(self):
         g = dn.DynDiGraph()
         self.assertIsInstance(g, dn.DynDiGraph)
@@ -165,35 +166,55 @@ class DynDiGraphTestCase(unittest.TestCase):
         g.add_interaction(7, 8, 6)
 
         sr = g.in_interactions()
-        self.assertEqual(sr, [(0, 1, {'t': [[5, 5]]}), (1, 2, {'t': [[5, 5]]}), (2, 3, {'t': [[5, 5]]}),
-                              (3, 4, {'t': [[5, 5]]}), (4, 5, {'t': [[6, 6]]}), (5, 6, {'t': [[6, 6]]}),
-                              (6, 7, {'t': [[6, 6]]}), (7, 8, {'t': [[6, 6]]})])
+        self.assertEqual(
+            sr,
+            [
+                (0, 1, {"t": [[5, 5]]}),
+                (1, 2, {"t": [[5, 5]]}),
+                (2, 3, {"t": [[5, 5]]}),
+                (3, 4, {"t": [[5, 5]]}),
+                (4, 5, {"t": [[6, 6]]}),
+                (5, 6, {"t": [[6, 6]]}),
+                (6, 7, {"t": [[6, 6]]}),
+                (7, 8, {"t": [[6, 6]]}),
+            ],
+        )
 
         sr = g.in_interactions([0, 1])
-        self.assertEqual(sr, [(0, 1, {'t': [[5, 5]]})])
+        self.assertEqual(sr, [(0, 1, {"t": [[5, 5]]})])
 
         sr = g.in_interactions([9, 10])
         self.assertEqual(sr, [])
 
         sr = g.in_interactions([0, 1], 5)
-        self.assertEqual(sr, [(0, 1, {'t': [5]})])
+        self.assertEqual(sr, [(0, 1, {"t": [5]})])
 
         sr = g.in_interactions([0, 1], 7)
         self.assertEqual(sr, [])
 
         sr = g.out_interactions()
-        self.assertEqual(sr, [(0, 1, {'t': [[5, 5]]}), (1, 2, {'t': [[5, 5]]}), (2, 3, {'t': [[5, 5]]}),
-                              (3, 4, {'t': [[5, 5]]}), (4, 5, {'t': [[6, 6]]}), (5, 6, {'t': [[6, 6]]}),
-                              (6, 7, {'t': [[6, 6]]}), (7, 8, {'t': [[6, 6]]})])
+        self.assertEqual(
+            sr,
+            [
+                (0, 1, {"t": [[5, 5]]}),
+                (1, 2, {"t": [[5, 5]]}),
+                (2, 3, {"t": [[5, 5]]}),
+                (3, 4, {"t": [[5, 5]]}),
+                (4, 5, {"t": [[6, 6]]}),
+                (5, 6, {"t": [[6, 6]]}),
+                (6, 7, {"t": [[6, 6]]}),
+                (7, 8, {"t": [[6, 6]]}),
+            ],
+        )
 
         sr = g.out_interactions([0])
-        self.assertEqual(sr, [(0, 1, {'t': [[5, 5]]})])
+        self.assertEqual(sr, [(0, 1, {"t": [[5, 5]]})])
 
         sr = g.out_interactions([9, 10])
         self.assertEqual(sr, [])
 
         sr = g.out_interactions([0, 1], 5)
-        self.assertEqual(sr, [(0, 1, {'t': [5]}), (1, 2, {'t': [5]})])
+        self.assertEqual(sr, [(0, 1, {"t": [5]}), (1, 2, {"t": [5]})])
 
         sr = g.out_interactions([0, 1], 7)
         self.assertEqual(sr, [])
@@ -322,7 +343,6 @@ class DynDiGraphTestCase(unittest.TestCase):
         self.assertEqual(h.number_of_nodes(), 5)
         self.assertEqual(h.number_of_interactions(), 4)
 
-
         h = g.time_slice(5, 5)
         self.assertIsInstance(h, dn.DynDiGraph)
         self.assertEqual(h.number_of_nodes(), 5)
@@ -348,7 +368,7 @@ class DynDiGraphTestCase(unittest.TestCase):
         g.add_interaction(5, 6, 6)
         g.add_interaction(6, 7, 6)
         g.add_interaction(7, 8, 6)
-        tsd =g.temporal_snapshots_ids()
+        tsd = g.temporal_snapshots_ids()
 
         self.assertEqual(tsd, [5, 6])
 
@@ -441,7 +461,6 @@ class DynDiGraphTestCase(unittest.TestCase):
         ivt = g.inter_in_event_time_distribution(0, 2)
         self.assertDictEqual(ivt, {})
 
-
     def test_stream_interactions(self):
         g = dn.DynDiGraph()
         g.add_interaction(1, 2, 2)
@@ -454,8 +473,17 @@ class DynDiGraphTestCase(unittest.TestCase):
 
         sres = list(g.stream_interactions())
 
-        cres = [(1, 2, '+', 2), (1, 3, '+', 2), (1, 5, '+', 2), (1, 3, '-', 3),
-                (1, 5, '-', 3), (1, 2, '-', 6), (1, 2, '+', 7), (1, 2, '-', 15), (1, 2, '+', 18)]
+        cres = [
+            (1, 2, "+", 2),
+            (1, 3, "+", 2),
+            (1, 5, "+", 2),
+            (1, 3, "-", 3),
+            (1, 5, "-", 3),
+            (1, 2, "-", 6),
+            (1, 2, "+", 7),
+            (1, 2, "-", 15),
+            (1, 2, "+", 18),
+        ]
         self.assertEquals(sorted(sres), sorted(cres))
 
     def test_accumulative_growth(self):
@@ -468,7 +496,7 @@ class DynDiGraphTestCase(unittest.TestCase):
         g.add_interaction(1, 2, 19)
         g.add_interactions_from([(1, 3), (1, 5)], t=2, e=3)
         sres = list(g.stream_interactions())
-        cres = [(1, 2, '+', 2), (1, 5, '+', 2), (1, 3, '+', 2)]
+        cres = [(1, 2, "+", 2), (1, 5, "+", 2), (1, 3, "+", 2)]
         self.assertEquals(sorted(sres), sorted(cres))
         self.assertEqual(g.has_interaction(1, 2, 18), True)
         self.assertEqual(g.has_interaction(1, 2, 40), False)
@@ -477,5 +505,6 @@ class DynDiGraphTestCase(unittest.TestCase):
         except:
             pass
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

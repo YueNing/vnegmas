@@ -5,10 +5,7 @@ import networkx as nx
 from decorator import decorator
 from networkx.utils import is_string_like
 
-__all__ = [
-    'open_file',
-    'not_implemented',
-]
+__all__ = ["open_file", "not_implemented"]
 
 
 def not_implemented():
@@ -34,32 +31,36 @@ def not_implemented():
            pass
 
     """
+
     @decorator
     def _not_implemented(f, *args, **kwargs):
 
-        raise nx.NetworkXNotImplemented('Method not implemented for dynamic graphs')
+        raise nx.NetworkXNotImplemented("Method not implemented for dynamic graphs")
 
     return _not_implemented
 
 
 def _open_gz(path, mode):
     import gzip
-    return gzip.open(path,mode=mode)
+
+    return gzip.open(path, mode=mode)
 
 
 def _open_bz2(path, mode):
     import bz2
-    return bz2.BZ2File(path,mode=mode)
+
+    return bz2.BZ2File(path, mode=mode)
+
 
 # To handle new extensions, define a function accepting a `path` and `mode`.
 # Then add the extension to _dispatch_dict.
 _dispatch_dict = defaultdict(lambda: open)
-_dispatch_dict['.gz'] = _open_gz
-_dispatch_dict['.bz2'] = _open_bz2
-_dispatch_dict['.gzip'] = _open_gz
+_dispatch_dict[".gz"] = _open_gz
+_dispatch_dict[".bz2"] = _open_bz2
+_dispatch_dict[".gzip"] = _open_gz
 
 
-def open_file(path_arg, mode='r'):
+def open_file(path_arg, mode="r"):
     """Decorator to ensure clean opening and closing of files.
 
     Parameters
@@ -151,7 +152,7 @@ def open_file(path_arg, mode='r'):
             except KeyError:
                 # Could not find the keyword. Thus, no default was specified
                 # in the function signature and the user did not provide it.
-                msg = 'Missing required keyword argument: {0}'
+                msg = "Missing required keyword argument: {0}"
                 raise nx.NetworkXError(msg.format(path_arg))
             else:
                 is_kwarg = True
@@ -171,7 +172,7 @@ def open_file(path_arg, mode='r'):
             ext = splitext(path)[1]
             fobj = _dispatch_dict[ext](path, mode=mode)
             close_fobj = True
-        elif hasattr(path, 'read'):
+        elif hasattr(path, "read"):
             # path is already a file-like object
             fobj = path
             close_fobj = False

@@ -1,14 +1,5 @@
-from typing import (
-    Any,
-    Callable,
-    Iterable,
-    List,
-    Mapping,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import (Any, Callable, Iterable, List, Mapping, Optional, Sequence,
+                    Tuple, Union)
 
 from .utils import JsCode
 

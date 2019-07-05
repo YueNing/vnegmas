@@ -1,26 +1,48 @@
 from __future__ import division
 
-from ..utils import not_implemented
 from collections import Counter
 from itertools import chain
 
 import networkx as nx
 
+from ..utils import not_implemented
 
-__author__ = 'Giulio Rossetti'
+__author__ = "Giulio Rossetti"
 __license__ = "GPL"
 __email__ = "giulio.rossetti@gmail.com"
 
 
-__all__ = ['nodes', 'interactions', 'degree', 'degree_histogram', 'neighbors',
-           'number_of_nodes', 'number_of_interactions', 'density',
-           'is_directed', 'freeze', 'is_frozen', 'subgraph',
-           'add_star', 'add_path', 'add_cycle',
-           'create_empty_copy', 'set_node_attributes',
-           'get_node_attributes', 'set_edge_attributes',
-           'get_edge_attributes', 'all_neighbors', 'non_neighbors',
-           'non_interactions', 'is_empty', 'time_slice', 'stream_interactions', 'interactions_per_snapshots',
-           'temporal_snapshots_ids', 'inter_event_time_distribution']
+__all__ = [
+    "nodes",
+    "interactions",
+    "degree",
+    "degree_histogram",
+    "neighbors",
+    "number_of_nodes",
+    "number_of_interactions",
+    "density",
+    "is_directed",
+    "freeze",
+    "is_frozen",
+    "subgraph",
+    "add_star",
+    "add_path",
+    "add_cycle",
+    "create_empty_copy",
+    "set_node_attributes",
+    "get_node_attributes",
+    "set_edge_attributes",
+    "get_edge_attributes",
+    "all_neighbors",
+    "non_neighbors",
+    "non_interactions",
+    "is_empty",
+    "time_slice",
+    "stream_interactions",
+    "interactions_per_snapshots",
+    "temporal_snapshots_ids",
+    "inter_event_time_distribution",
+]
 
 
 def nodes(G, t=None):
@@ -643,7 +665,7 @@ def non_interactions(graph, t=None):
     #    for u in graph:
     #        for v in non_neighbors(graph, u, t):
     #            yield (u, v)
-    #else:
+    # else:
     nodes = set(graph)
     while nodes:
         u = nodes.pop()

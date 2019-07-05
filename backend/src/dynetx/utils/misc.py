@@ -8,6 +8,7 @@ Miscellaneous Helpers for DyNetx.
 #    All rights reserved.
 #    BSD license.
 import sys
+
 # itertools.accumulate is only available on Python 3.2 or later.
 #
 # Once support for Python versions less than 3.2 is dropped, this code should
@@ -31,20 +32,29 @@ except ImportError:
             total = func(total, element)
             yield total
 
-__author__ = '\n'.join(['Aric Hagberg (hagberg@lanl.gov)',
-                        'Dan Schult(dschult@colgate.edu)',
-                        'Ben Edwards(bedwards@cs.unm.edu)'])
+
+__author__ = "\n".join(
+    [
+        "Aric Hagberg (hagberg@lanl.gov)",
+        "Dan Schult(dschult@colgate.edu)",
+        "Ben Edwards(bedwards@cs.unm.edu)",
+    ]
+)
 
 
 PY2 = sys.version_info[0] == 2
 if PY2:
+
     def make_str(x):
         """Return the string representation of t."""
         if isinstance(x, unicode):
             return x
         else:
-            return unicode(str(x), 'unicode-escape')
+            return unicode(str(x), "unicode-escape")
+
+
 else:
+
     def make_str(x):
         """Return the string representation of t."""
         return str(x)

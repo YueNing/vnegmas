@@ -1,4 +1,5 @@
-from multiprocessing import Manager, Event, Queue
+from multiprocessing import Event, Manager, Queue
+
 world_recall_reuslt_dict = Manager().dict()
 publicAcc = Manager().Queue()
-event =  Event()
+event = Event()

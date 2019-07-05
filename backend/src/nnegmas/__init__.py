@@ -1,5 +1,4 @@
-from . import glovar
+from . import glovar, negmas_draw
 from .EventEngine import *
 from .negmas_test import run_negmas
 from .showProcess import ShowProcess
-from . import negmas_draw

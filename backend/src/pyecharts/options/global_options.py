@@ -1,13 +1,8 @@
 from ..commons.types import JSFunc, Numeric, Optional, Sequence, Union
 from ..globals import CurrentConfig, RenderType, ThemeType
-from ..options.series_options import (
-    BasicOpts,
-    LabelOpts,
-    LineStyleOpts,
-    SplitAreaOpts,
-    SplitLineOpts,
-    TextStyleOpts,
-)
+from ..options.series_options import (BasicOpts, LabelOpts, LineStyleOpts,
+                                      SplitAreaOpts, SplitLineOpts,
+                                      TextStyleOpts)
 
 
 class InitOpts:

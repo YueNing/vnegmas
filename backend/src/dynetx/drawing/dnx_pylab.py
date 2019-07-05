@@ -28,26 +28,31 @@ DyNetx:         https://dynetx.readthedocs.io/en/latest/
 
 """
 from numbers import Number
+
 import networkx as nx
+from networkx.drawing.layout import (circular_layout, kamada_kawai_layout,
+                                     planar_layout, random_layout,
+                                     shell_layout, spectral_layout,
+                                     spring_layout)
 from networkx.utils import is_string_like
-from networkx.drawing.layout import shell_layout, \
-    circular_layout, kamada_kawai_layout, spectral_layout, \
-    spring_layout, random_layout, planar_layout
+
 from ..drawing import glovar
 
-__all__ = ['draw',
-           'draw_networkx',
-           'draw_networkx_nodes',
-           'draw_networkx_edges',
-           'draw_networkx_labels',
-           'draw_networkx_edge_labels',
-           'draw_circular',
-           'draw_kamada_kawai',
-           'draw_random',
-           'draw_spectral',
-           'draw_spring',
-           'draw_planar',
-           'draw_shell']
+__all__ = [
+    "draw",
+    "draw_networkx",
+    "draw_networkx_nodes",
+    "draw_networkx_edges",
+    "draw_networkx_labels",
+    "draw_networkx_edge_labels",
+    "draw_circular",
+    "draw_kamada_kawai",
+    "draw_random",
+    "draw_spectral",
+    "draw_spring",
+    "draw_planar",
+    "draw_shell",
+]
 
 
 def draw(G, pos=None, ax=None, **kwds):
@@ -122,16 +127,16 @@ def draw(G, pos=None, ax=None, **kwds):
         cf = plt.gcf()
     else:
         cf = ax.get_figure()
-    cf.set_facecolor('w')
+    cf.set_facecolor("w")
     if ax is None:
         if cf._axstack() is None:
             ax = cf.add_axes((0, 0, 1, 1))
         else:
             ax = cf.gca()
 
-    if 'with_labels' not in kwds:
-        kwds['with_labels'] = 'labels' in kwds
-        
+    if "with_labels" not in kwds:
+        kwds["with_labels"] = "labels" in kwds
+
     if pos is None:
         glovar.pos = nx.drawing.spring_layout(G)  # default to spring layout
     else:
@@ -140,7 +145,7 @@ def draw(G, pos=None, ax=None, **kwds):
         if G.time_to_edge:
             glovar.G = G
             _draw_networkx(glovar.G, glovar.pos)
-            ai = FuncAnimation(cf,_draw_edges, frames=_frame_analyse, interval=1000)
+            ai = FuncAnimation(cf, _draw_edges, frames=_frame_analyse, interval=1000)
             ax.set_axis_off()
             plt.draw_if_interactive()
         else:
@@ -151,24 +156,28 @@ def draw(G, pos=None, ax=None, **kwds):
         raise
     return
 
-def _draw_networkx(G, pos, with_labels=True,  **kwds):
+
+def _draw_networkx(G, pos, with_labels=True, **kwds):
     node_collection = draw_networkx_nodes(glovar.G, glovar.pos, **kwds)
     if with_labels:
         draw_networkx_labels(G, pos, **kwds)
 
+
 def _draw_edges(frame, ax=None, with_labels=True, **kwds):
     edge_collection = draw_networkx_edges(frame[0], frame[1], arrows=frame[2], **kwds)
+
 
 def _frame_analyse():
     n = 0
     while n < len(glovar.G.time_to_edge):
         show_G = type(glovar.G).__base__()
         nodes = []
-        for interaction in  glovar.G.time_to_edge[n]:
+        for interaction in glovar.G.time_to_edge[n]:
             nodes.append((interaction[0], interaction[1]))
         show_G.add_edges_from(nodes)
         yield [show_G, glovar.pos, True]
-        n +=1
+        n += 1
+
 
 def draw_networkx(G, pos=None, arrows=True, with_labels=True, **kwds):
     """Draw the graph G using Matplotlib.
@@ -319,20 +328,24 @@ def draw_networkx(G, pos=None, arrows=True, with_labels=True, **kwds):
         draw_networkx_labels(G, pos, **kwds)
     plt.draw_if_interactive()
 
-def draw_networkx_nodes(G, pos,
-                        nodelist=None,
-                        node_size=300,
-                        node_color='#1f78b4',
-                        node_shape='o',
-                        alpha=None,
-                        cmap=None,
-                        vmin=None,
-                        vmax=None,
-                        ax=None,
-                        linewidths=None,
-                        edgecolors=None,
-                        label=None,
-                        **kwds):
+
+def draw_networkx_nodes(
+    G,
+    pos,
+    nodelist=None,
+    node_size=300,
+    node_color="#1f78b4",
+    node_shape="o",
+    alpha=None,
+    cmap=None,
+    vmin=None,
+    vmax=None,
+    ax=None,
+    linewidths=None,
+    edgecolors=None,
+    label=None,
+    **kwds
+):
     """Draw the nodes of the graph G.
 
     This draws only the nodes of the graph G.
@@ -410,6 +423,7 @@ def draw_networkx_nodes(G, pos,
     draw_networkx_edge_labels()
     """
     import collections
+
     try:
         import matplotlib.pyplot as plt
         import numpy as np
@@ -431,56 +445,63 @@ def draw_networkx_nodes(G, pos,
     try:
         xy = np.asarray([pos[v] for v in nodelist])
     except KeyError as e:
-        raise nx.NetworkXError('Node %s has no position.' % e)
+        raise nx.NetworkXError("Node %s has no position." % e)
     except ValueError:
-        raise nx.NetworkXError('Bad value in node positions.')
+        raise nx.NetworkXError("Bad value in node positions.")
 
     if isinstance(alpha, collections.Iterable):
         node_color = apply_alpha(node_color, alpha, nodelist, cmap, vmin, vmax)
         alpha = None
 
-    node_collection = ax.scatter(xy[:, 0], xy[:, 1],
-                                 s=node_size,
-                                 c=node_color,
-                                 marker=node_shape,
-                                 cmap=cmap,
-                                 vmin=vmin,
-                                 vmax=vmax,
-                                 alpha=alpha,
-                                 linewidths=linewidths,
-                                 edgecolors=edgecolors,
-                                 label=label)
+    node_collection = ax.scatter(
+        xy[:, 0],
+        xy[:, 1],
+        s=node_size,
+        c=node_color,
+        marker=node_shape,
+        cmap=cmap,
+        vmin=vmin,
+        vmax=vmax,
+        alpha=alpha,
+        linewidths=linewidths,
+        edgecolors=edgecolors,
+        label=label,
+    )
     plt.tick_params(
-        axis='both',
-        which='both',
+        axis="both",
+        which="both",
         bottom=False,
         left=False,
         labelbottom=False,
-        labelleft=False)
+        labelleft=False,
+    )
 
     node_collection.set_zorder(2)
     return node_collection
 
 
-def draw_networkx_edges(G, pos,
-                        edgelist=None,
-                        width=1.0,
-                        edge_color='k',
-                        style='solid',
-                        alpha=None,
-                        arrowstyle='-|>',
-                        arrowsize=10,
-                        edge_cmap=None,
-                        edge_vmin=None,
-                        edge_vmax=None,
-                        ax=None,
-                        arrows=True,
-                        label=None,
-                        node_size=300,
-                        nodelist=None,
-                        node_shape="o",
-                        connectionstyle=None,
-                        **kwds):
+def draw_networkx_edges(
+    G,
+    pos,
+    edgelist=None,
+    width=1.0,
+    edge_color="k",
+    style="solid",
+    alpha=None,
+    arrowstyle="-|>",
+    arrowsize=10,
+    edge_cmap=None,
+    edge_vmin=None,
+    edge_vmax=None,
+    ax=None,
+    arrows=True,
+    label=None,
+    node_size=300,
+    nodelist=None,
+    node_shape="o",
+    connectionstyle=None,
+    **kwds
+):
     """Draw the edges of the graph G.
 
     This draws only the edges of the graph G.
@@ -611,35 +632,39 @@ def draw_networkx_edges(G, pos,
 
     # FancyArrowPatch handles color=None different from LineCollection
     if edge_color is None:
-        edge_color = 'k'
+        edge_color = "k"
 
     # set edge positions
     edge_pos = np.asarray([(pos[e[0]], pos[e[1]]) for e in edgelist])
 
     # Check if edge_color is an array of floats and map to edge_cmap.
     # This is the only case handled differently from matplotlib
-    if cb.iterable(edge_color) and (len(edge_color) == len(edge_pos)) \
-        and np.alltrue([isinstance(c,Number) for c in edge_color]):
-            if edge_cmap is not None:
-                assert(isinstance(edge_cmap, Colormap))
-            else:
-                edge_cmap = plt.get_cmap()
-            if edge_vmin is None:
-                edge_vmin = min(edge_color)
-            if edge_vmax is None:
-                edge_vmax = max(edge_color)
-            color_normal = Normalize(vmin=edge_vmin, vmax=edge_vmax)
-            edge_color = [edge_cmap(color_normal(e)) for e in edge_color]
+    if (
+        cb.iterable(edge_color)
+        and (len(edge_color) == len(edge_pos))
+        and np.alltrue([isinstance(c, Number) for c in edge_color])
+    ):
+        if edge_cmap is not None:
+            assert isinstance(edge_cmap, Colormap)
+        else:
+            edge_cmap = plt.get_cmap()
+        if edge_vmin is None:
+            edge_vmin = min(edge_color)
+        if edge_vmax is None:
+            edge_vmax = max(edge_color)
+        color_normal = Normalize(vmin=edge_vmin, vmax=edge_vmax)
+        edge_color = [edge_cmap(color_normal(e)) for e in edge_color]
 
-    if (not G.is_directed() or not arrows):
-        edge_collection = LineCollection(edge_pos,
-                                         colors=edge_color,
-                                         linewidths=width,
-                                         antialiaseds=(1,),
-                                         linestyle=style,
-                                         transOffset=ax.transData,
-                                         alpha=alpha
-                                         )
+    if not G.is_directed() or not arrows:
+        edge_collection = LineCollection(
+            edge_pos,
+            colors=edge_color,
+            linewidths=width,
+            antialiaseds=(1,),
+            linestyle=style,
+            transOffset=ax.transData,
+            alpha=alpha,
+        )
 
         edge_collection.set_zorder(1)  # edges go behind nodes
         edge_collection.set_label(label)
@@ -665,7 +690,7 @@ def draw_networkx_edges(G, pos,
         mutation_scale = arrowsize  # scale factor of arrow head
 
         # FancyArrowPatch doesn't handle color strings
-        arrow_colors = colorConverter.to_rgba_array(edge_color,alpha)
+        arrow_colors = colorConverter.to_rgba_array(edge_color, alpha)
         for i, (src, dst) in enumerate(edge_pos):
             x1, y1 = src
             x2, y2 = dst
@@ -682,10 +707,10 @@ def draw_networkx_edges(G, pos,
             if cb.iterable(arrow_colors):
                 if len(arrow_colors) == len(edge_pos):
                     arrow_color = arrow_colors[i]
-                elif len(arrow_colors)==1:
+                elif len(arrow_colors) == 1:
                     arrow_color = arrow_colors[0]
-                else: # Cycle through colors
-                    arrow_color =  arrow_colors[i%len(arrow_colors)]
+                else:  # Cycle through colors
+                    arrow_color = arrow_colors[i % len(arrow_colors)]
             else:
                 arrow_color = edge_color
 
@@ -693,19 +718,22 @@ def draw_networkx_edges(G, pos,
                 if len(width) == len(edge_pos):
                     line_width = width[i]
                 else:
-                    line_width = width[i%len(width)]
+                    line_width = width[i % len(width)]
             else:
                 line_width = width
 
-            arrow = FancyArrowPatch((x1, y1), (x2, y2),
-                                    arrowstyle=arrowstyle,
-                                    shrinkA=shrink_source,
-                                    shrinkB=shrink_target,
-                                    mutation_scale=mutation_scale,
-                                    color=arrow_color,
-                                    linewidth=line_width,
-                                    connectionstyle=connectionstyle,
-                                    zorder=1)  # arrows go behind nodes
+            arrow = FancyArrowPatch(
+                (x1, y1),
+                (x2, y2),
+                arrowstyle=arrowstyle,
+                shrinkA=shrink_source,
+                shrinkB=shrink_target,
+                mutation_scale=mutation_scale,
+                color=arrow_color,
+                linewidth=line_width,
+                connectionstyle=connectionstyle,
+                zorder=1,
+            )  # arrows go behind nodes
 
             # There seems to be a bug in matplotlib to make collections of
             # FancyArrowPatch instances. Until fixed, the patches are added
@@ -721,32 +749,36 @@ def draw_networkx_edges(G, pos,
 
     w = maxx - minx
     h = maxy - miny
-    padx,  pady = 0.05 * w, 0.05 * h
+    padx, pady = 0.05 * w, 0.05 * h
     corners = (minx - padx, miny - pady), (maxx + padx, maxy + pady)
     ax.update_datalim(corners)
     ax.autoscale_view()
 
     plt.tick_params(
-        axis='both',
-        which='both',
+        axis="both",
+        which="both",
         bottom=False,
         left=False,
         labelbottom=False,
-        labelleft=False)
+        labelleft=False,
+    )
 
     return arrow_collection
 
 
-def draw_networkx_labels(G, pos,
-                         labels=None,
-                         font_size=12,
-                         font_color='k',
-                         font_family='sans-serif',
-                         font_weight='normal',
-                         alpha=None,
-                         bbox=None,
-                         ax=None,
-                         **kwds):
+def draw_networkx_labels(
+    G,
+    pos,
+    labels=None,
+    font_size=12,
+    font_color="k",
+    font_family="sans-serif",
+    font_weight="normal",
+    alpha=None,
+    bbox=None,
+    ax=None,
+    **kwds
+):
     """Draw node labels on the graph G.
 
     Parameters
@@ -818,52 +850,58 @@ def draw_networkx_labels(G, pos,
         labels = dict((n, n) for n in G.nodes())
 
     # set optional alignment
-    horizontalalignment = kwds.get('horizontalalignment', 'center')
-    verticalalignment = kwds.get('verticalalignment', 'center')
+    horizontalalignment = kwds.get("horizontalalignment", "center")
+    verticalalignment = kwds.get("verticalalignment", "center")
 
     text_items = {}  # there is no text collection so we'll fake one
     for n, label in labels.items():
         (x, y) = pos[n]
         if not is_string_like(label):
             label = str(label)  # this makes "1" and 1 labeled the same
-        t = ax.text(x, y,
-                    label,
-                    size=font_size,
-                    color=font_color,
-                    family=font_family,
-                    weight=font_weight,
-                    alpha=alpha,
-                    horizontalalignment=horizontalalignment,
-                    verticalalignment=verticalalignment,
-                    transform=ax.transData,
-                    bbox=bbox,
-                    clip_on=True,
-                    )
+        t = ax.text(
+            x,
+            y,
+            label,
+            size=font_size,
+            color=font_color,
+            family=font_family,
+            weight=font_weight,
+            alpha=alpha,
+            horizontalalignment=horizontalalignment,
+            verticalalignment=verticalalignment,
+            transform=ax.transData,
+            bbox=bbox,
+            clip_on=True,
+        )
         text_items[n] = t
 
     plt.tick_params(
-        axis='both',
-        which='both',
+        axis="both",
+        which="both",
         bottom=False,
         left=False,
         labelbottom=False,
-        labelleft=False)
+        labelleft=False,
+    )
 
     return text_items
 
 
-def draw_networkx_edge_labels(G, pos,
-                              edge_labels=None,
-                              label_pos=0.5,
-                              font_size=10,
-                              font_color='k',
-                              font_family='sans-serif',
-                              font_weight='normal',
-                              alpha=None,
-                              bbox=None,
-                              ax=None,
-                              rotate=True,
-                              **kwds):
+def draw_networkx_edge_labels(
+    G,
+    pos,
+    edge_labels=None,
+    label_pos=0.5,
+    font_size=10,
+    font_color="k",
+    font_family="sans-serif",
+    font_weight="normal",
+    alpha=None,
+    bbox=None,
+    ax=None,
+    rotate=True,
+    **kwds
+):
     """Draw edge labels.
 
     Parameters
@@ -947,8 +985,10 @@ def draw_networkx_edge_labels(G, pos,
     for (n1, n2), label in labels.items():
         (x1, y1) = pos[n1]
         (x2, y2) = pos[n2]
-        (x, y) = (x1 * label_pos + x2 * (1.0 - label_pos),
-                  y1 * label_pos + y2 * (1.0 - label_pos))
+        (x, y) = (
+            x1 * label_pos + x2 * (1.0 - label_pos),
+            y1 * label_pos + y2 * (1.0 - label_pos),
+        )
 
         if rotate:
             # in degrees
@@ -956,51 +996,52 @@ def draw_networkx_edge_labels(G, pos,
             # make label orientation "right-side-up"
             if angle > 90:
                 angle -= 180
-            if angle < - 90:
+            if angle < -90:
                 angle += 180
             # transform data coordinate angle to screen coordinate angle
             xy = np.array((x, y))
-            trans_angle = ax.transData.transform_angles(np.array((angle,)),
-                                                        xy.reshape((1, 2)))[0]
+            trans_angle = ax.transData.transform_angles(
+                np.array((angle,)), xy.reshape((1, 2))
+            )[0]
         else:
             trans_angle = 0.0
         # use default box of white with white border
         if bbox is None:
-            bbox = dict(boxstyle='round',
-                        ec=(1.0, 1.0, 1.0),
-                        fc=(1.0, 1.0, 1.0),
-                        )
+            bbox = dict(boxstyle="round", ec=(1.0, 1.0, 1.0), fc=(1.0, 1.0, 1.0))
         if not is_string_like(label):
             label = str(label)  # this makes "1" and 1 labeled the same
 
         # set optional alignment
-        horizontalalignment = kwds.get('horizontalalignment', 'center')
-        verticalalignment = kwds.get('verticalalignment', 'center')
+        horizontalalignment = kwds.get("horizontalalignment", "center")
+        verticalalignment = kwds.get("verticalalignment", "center")
 
-        t = ax.text(x, y,
-                    label,
-                    size=font_size,
-                    color=font_color,
-                    family=font_family,
-                    weight=font_weight,
-                    alpha=alpha,
-                    horizontalalignment=horizontalalignment,
-                    verticalalignment=verticalalignment,
-                    rotation=trans_angle,
-                    transform=ax.transData,
-                    bbox=bbox,
-                    zorder=1,
-                    clip_on=True,
-                    )
+        t = ax.text(
+            x,
+            y,
+            label,
+            size=font_size,
+            color=font_color,
+            family=font_family,
+            weight=font_weight,
+            alpha=alpha,
+            horizontalalignment=horizontalalignment,
+            verticalalignment=verticalalignment,
+            rotation=trans_angle,
+            transform=ax.transData,
+            bbox=bbox,
+            zorder=1,
+            clip_on=True,
+        )
         text_items[(n1, n2)] = t
 
     plt.tick_params(
-        axis='both',
-        which='both',
+        axis="both",
+        which="both",
         bottom=False,
         left=False,
         labelbottom=False,
-        labelleft=False)
+        labelleft=False,
+    )
 
     return text_items
 
@@ -1103,9 +1144,9 @@ def draw_shell(G, **kwargs):
        with the exception of the pos parameter which is not used by this
        function.
     """
-    nlist = kwargs.get('nlist', None)
+    nlist = kwargs.get("nlist", None)
     if nlist is not None:
-        del(kwargs['nlist'])
+        del kwargs["nlist"]
     draw(G, shell_layout(G, nlist=nlist), **kwargs)
 
 
@@ -1185,8 +1226,7 @@ def apply_alpha(colors, alpha, elem_list, cmap=None, vmin=None, vmax=None):
         try:
             rgba_colors = np.array([colorConverter.to_rgba(colors)])
         except ValueError:
-            rgba_colors = np.array([colorConverter.to_rgba(color)
-                                    for color in colors])
+            rgba_colors = np.array([colorConverter.to_rgba(color) for color in colors])
     # Set the final column of the rgba_colors to have the relevant alpha values
     try:
         # If alpha is longer than the number of colors, resize to the number of
@@ -1198,19 +1238,22 @@ def apply_alpha(colors, alpha, elem_list, cmap=None, vmin=None, vmax=None):
             rgba_colors[1:, 0] = rgba_colors[0, 0]
             rgba_colors[1:, 1] = rgba_colors[0, 1]
             rgba_colors[1:, 2] = rgba_colors[0, 2]
-        rgba_colors[:,  3] = list(islice(cycle(alpha), len(rgba_colors)))
+        rgba_colors[:, 3] = list(islice(cycle(alpha), len(rgba_colors)))
     except TypeError:
         rgba_colors[:, -1] = alpha
     return rgba_colors
+
 
 # fixture for nose tests
 
 
 def setup_module(module):
     from nose import SkipTest
+
     try:
         import matplotlib as mpl
-        mpl.use('PS', warn=False)
+
+        mpl.use("PS", warn=False)
         import matplotlib.pyplot as plt
     except:
         raise SkipTest("matplotlib not available")

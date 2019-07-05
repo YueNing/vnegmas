@@ -1,9 +1,11 @@
-import networkx as nx
 from collections import defaultdict
-from ..utils import not_implemented
 from copy import deepcopy
 
-__author__ = 'Giulio Rossetti'
+import networkx as nx
+
+from ..utils import not_implemented
+
+__author__ = "Giulio Rossetti"
 __license__ = "GPL"
 __email__ = "giulio.rossetti@gmail.com"
 
@@ -248,11 +250,11 @@ class DynDiGraph(nx.DiGraph):
     def __presence_test(self, u, v, t):
         if v not in self._succ[u]:
             return False
-        spans = self._succ[u][v]['t']
+        spans = self._succ[u][v]["t"]
         if self.edge_removal:
             if spans[0][0] <= t <= spans[-1][1]:
                 for s in spans:
-                    if t in range(s[0], s[1]+1):
+                    if t in range(s[0], s[1] + 1):
                         return True
         else:
             if spans[0][0] <= t <= max(self.temporal_snapshots_ids()):
@@ -328,7 +330,9 @@ class DynDiGraph(nx.DiGraph):
         if nbunch is None:
             nodes_nbrs = ((n, succs, self._pred[n]) for n, succs in self._succ.items())
         else:
-            nodes_nbrs = ((n, self._succ[n], self._pred[n]) for n in self.nbunch_iter(nbunch))
+            nodes_nbrs = (
+                (n, self._succ[n], self._pred[n]) for n in self.nbunch_iter(nbunch)
+            )
 
         if t is None:
             for n, succ, pred in nodes_nbrs:
@@ -336,8 +340,12 @@ class DynDiGraph(nx.DiGraph):
 
         else:
             for n, succ, pred in nodes_nbrs:
-                edges_succ = len([v for v in succ.keys() if self.__presence_test(n, v, t)])
-                edges_pred = len([v for v in pred.keys() if self.__presence_test(v, n, t)])
+                edges_succ = len(
+                    [v for v in succ.keys() if self.__presence_test(n, v, t)]
+                )
+                edges_pred = len(
+                    [v for v in pred.keys() if self.__presence_test(v, n, t)]
+                )
                 yield (n, edges_succ + edges_pred)
 
     def degree(self, nbunch=None, t=None):
@@ -469,8 +477,7 @@ class DynDiGraph(nx.DiGraph):
         will produce an interaction present in snapshots [0, 9]
         """
         if t is None:
-            raise nx.NetworkXError(
-                "The t argument must be specified.")
+            raise nx.NetworkXError("The t argument must be specified.")
 
         if u not in self._succ:
             self._succ[u] = self.adjlist_inner_dict_factory()
@@ -505,20 +512,25 @@ class DynDiGraph(nx.DiGraph):
         # add the interaction
         datadict = self.adj[u].get(v, self.edge_attr_dict_factory())
 
-        if 't' in datadict:
-            app = datadict['t']
+        if "t" in datadict:
+            app = datadict["t"]
             max_end = app[-1][1]
 
             if max_end == app[-1][0] and t[0] == app[-1][0] + 1:
 
                 app[-1] = [app[-1][0], t[1]]
-                if app[-1][0] + 1 in self.time_to_edge and (u, v, "+") in self.time_to_edge[app[-1][0] + 1]:
+                if (
+                    app[-1][0] + 1 in self.time_to_edge
+                    and (u, v, "+") in self.time_to_edge[app[-1][0] + 1]
+                ):
                     del self.time_to_edge[app[-1][0] + 1][(u, v, "+")]
 
             else:
                 if t[0] < app[-1][0]:
-                    raise ValueError("The specified interaction extension is broader than "
-                                     "the ones already present for the given nodes.")
+                    raise ValueError(
+                        "The specified interaction extension is broader than "
+                        "the ones already present for the given nodes."
+                    )
 
                 if t[0] <= max_end < t[1]:
                     app[-1][1] = t[1]
@@ -527,22 +539,28 @@ class DynDiGraph(nx.DiGraph):
                             del self.time_to_edge[max_end + 1][(u, v, "-")]
                         del self.time_to_edge[t[0]][(u, v, "+")]
 
-                elif max_end == t[0]-1:
-                    if max_end + 1 in self.time_to_edge and (u, v, "+") in self.time_to_edge[max_end + 1]:
+                elif max_end == t[0] - 1:
+                    if (
+                        max_end + 1 in self.time_to_edge
+                        and (u, v, "+") in self.time_to_edge[max_end + 1]
+                    ):
                         del self.time_to_edge[max_end + 1][(u, v, "+")]
                         if self.edge_removal:
-                            if max_end+1 in self.time_to_edge and (u, v, '-') in self.time_to_edge[max_end+1]:
-                                del self.time_to_edge[max_end+1][(u, v, '-')]
-                            if t[1]+1 in self.time_to_edge:
-                                self.time_to_edge[t[1]+1][(u, v, "-")] = None
+                            if (
+                                max_end + 1 in self.time_to_edge
+                                and (u, v, "-") in self.time_to_edge[max_end + 1]
+                            ):
+                                del self.time_to_edge[max_end + 1][(u, v, "-")]
+                            if t[1] + 1 in self.time_to_edge:
+                                self.time_to_edge[t[1] + 1][(u, v, "-")] = None
                             else:
-                                self.time_to_edge[t[1]+1] = {(u, v, "-"): None}
+                                self.time_to_edge[t[1] + 1] = {(u, v, "-"): None}
 
                     app[-1][1] = t[1]
                 else:
                     app.append(t)
         else:
-            datadict['t'] = [t]
+            datadict["t"] = [t]
 
         if e is not None:
             span = range(t[0], t[1] + 1)
@@ -582,8 +600,7 @@ class DynDiGraph(nx.DiGraph):
         """
         # set up attribute dict
         if t is None:
-            raise nx.NetworkXError(
-                "The t argument must be a specified.")
+            raise nx.NetworkXError("The t argument must be a specified.")
         # process ebunch
         for ed in ebunch:
             self.add_interaction(ed[0], ed[1], t, e)
@@ -1235,7 +1252,7 @@ class DynDiGraph(nx.DiGraph):
             I = t_to
             F = t_from
 
-            for a, b in ts['t']:
+            for a, b in ts["t"]:
                 if I <= a and b <= F:
                     H.add_interaction(u, v, a, b)
                 elif a <= I and F <= b:
@@ -1306,10 +1323,10 @@ class DynDiGraph(nx.DiGraph):
         {0: 3, 1: 3, 2: 3}
         """
         if t is None:
-            return {k: v/2 for k, v in self.snapshots.items()}
+            return {k: v / 2 for k, v in self.snapshots.items()}
         else:
             try:
-                return self.snapshots[t]/2
+                return self.snapshots[t] / 2
             except KeyError:
                 return 0
 
@@ -1372,7 +1389,7 @@ class DynDiGraph(nx.DiGraph):
             if v not in self._succ[u]:
                 return {}
 
-            evt = self._succ[u][v]['t']
+            evt = self._succ[u][v]["t"]
             delta = []
 
             for i in evt:
@@ -1452,7 +1469,7 @@ class DynDiGraph(nx.DiGraph):
             if v not in self._pred[u]:
                 return {}
 
-            evt = self._pred[u][v]['t']
+            evt = self._pred[u][v]["t"]
             delta = []
 
             for i in evt:
@@ -1530,9 +1547,9 @@ class DynDiGraph(nx.DiGraph):
             # interaction inter event
 
             if v in self._pred[u]:
-                evt = self._pred[u][v]['t']
+                evt = self._pred[u][v]["t"]
             elif v in self._succ[u]:
-                evt = self._succ[u][v]['t']
+                evt = self._succ[u][v]["t"]
 
             delta = []
 
@@ -1641,6 +1658,7 @@ class DynDiGraph(nx.DiGraph):
         created by this method.
         """
         from .dyngraph import DynGraph
+
         H = DynGraph()
         H.name = self.name
         H.add_nodes_from(self)
@@ -1650,12 +1668,12 @@ class DynDiGraph(nx.DiGraph):
                 for v in self._node:
                     if u >= v:
                         try:
-                            outc = self._succ[u][v]['t']
-                            intc = self._pred[u][v]['t']
+                            outc = self._succ[u][v]["t"]
+                            intc = self._pred[u][v]["t"]
                             for o in outc:
-                                r = set(range(o[0], o[1]+1))
+                                r = set(range(o[0], o[1] + 1))
                                 for i in intc:
-                                    r2 = set(range(i[0], i[1]+1))
+                                    r2 = set(range(i[0], i[1] + 1))
                                     inter = list(r & r2)
                                     if len(inter) == 1:
                                         H.add_interaction(u, v, t=inter[0])
@@ -1667,7 +1685,7 @@ class DynDiGraph(nx.DiGraph):
 
         else:
             for it in self.interactions_iter():
-                for t in it[2]['t']:
+                for t in it[2]["t"]:
                     H.add_interaction(it[0], it[1], t=t[0], e=t[1])
 
         H.graph = deepcopy(self.graph)

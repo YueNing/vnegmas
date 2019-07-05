@@ -1,4 +1,1 @@
-from .web_api import (
-    run_negmas,
-    get_web_config
-)
+from .web_api import get_web_config, run_negmas

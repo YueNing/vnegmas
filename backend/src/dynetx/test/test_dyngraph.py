@@ -1,10 +1,11 @@
 from __future__ import absolute_import
+
 import unittest
+
 import dynetx as dn
 
 
 class DynGraphTestCase(unittest.TestCase):
-
     def test_dyngraph_add_interaction(self):
         g = dn.DynGraph()
         self.assertIsInstance(g, dn.DynGraph)
@@ -75,7 +76,6 @@ class DynGraphTestCase(unittest.TestCase):
             pass
 
         self.assertEqual(g.number_of_interactions(1, 90), 0)
-
 
     def test_nodes(self):
         g = dn.DynGraph()
@@ -205,7 +205,7 @@ class DynGraphTestCase(unittest.TestCase):
         g = dn.DynGraph()
         g.add_path([0, 1, 2, 3, 4], t=5)
         g.add_path([4, 5, 6, 7, 8], t=6)
-        tsd =g.temporal_snapshots_ids()
+        tsd = g.temporal_snapshots_ids()
 
         self.assertEqual(tsd, [5, 6])
 
@@ -252,8 +252,17 @@ class DynGraphTestCase(unittest.TestCase):
 
         sres = list(g.stream_interactions())
 
-        cres = [(1, 2, '+', 2), (1, 3, '+', 2), (1, 5, '+', 2), (1, 3, '-', 3),
-                (1, 5, '-', 3), (1, 2, '-', 6), (1, 2, '+', 7), (1, 2, '-', 15), (1, 2, '+', 18)]
+        cres = [
+            (1, 2, "+", 2),
+            (1, 3, "+", 2),
+            (1, 5, "+", 2),
+            (1, 3, "-", 3),
+            (1, 5, "-", 3),
+            (1, 2, "-", 6),
+            (1, 2, "+", 7),
+            (1, 2, "-", 15),
+            (1, 2, "+", 18),
+        ]
         self.assertEquals(sorted(sres), sorted(cres))
 
     def test_accumulative_growth(self):
@@ -266,7 +275,7 @@ class DynGraphTestCase(unittest.TestCase):
         g.add_interaction(1, 2, 19)
         g.add_interactions_from([(1, 3), (1, 5)], t=2, e=3)
         sres = list(g.stream_interactions())
-        cres = [(1, 2, '+', 2), (1, 5, '+', 2), (1, 3, '+', 2)]
+        cres = [(1, 2, "+", 2), (1, 5, "+", 2), (1, 3, "+", 2)]
         self.assertEquals(sorted(sres), sorted(cres))
         self.assertEqual(g.has_interaction(1, 2, 18), True)
         self.assertEqual(g.has_interaction(1, 2, 40), False)
@@ -275,5 +284,6 @@ class DynGraphTestCase(unittest.TestCase):
         except:
             pass
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

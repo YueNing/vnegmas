@@ -6,12 +6,14 @@ Of each interaction needs be specified the set of timestamps of its presence.
 Self-loops are allowed.
 """
 
-import networkx as nx
 from collections import defaultdict
-from ..utils import not_implemented
 from copy import deepcopy
 
-__author__ = 'Giulio Rossetti'
+import networkx as nx
+
+from ..utils import not_implemented
+
+__author__ = "Giulio Rossetti"
 __license__ = "GPL"
 __email__ = "giulio.rossetti@gmail.com"
 
@@ -223,7 +225,7 @@ class DynGraph(nx.Graph):
         return list(self.interactions_iter(nbunch, t))
 
     def __presence_test(self, u, v, t):
-        spans = self._adj[u][v]['t']
+        spans = self._adj[u][v]["t"]
         if self.edge_removal:
             if spans[0][0] <= t <= spans[-1][1]:
                 for s in spans:
@@ -327,8 +329,7 @@ class DynGraph(nx.Graph):
         will produce an interaction present in snapshots [0, 9]
         """
         if t is None:
-            raise nx.NetworkXError(
-                "The t argument must be specified.")
+            raise nx.NetworkXError("The t argument must be specified.")
 
         if u not in self._node:
             self._adj[u] = self.adjlist_inner_dict_factory()
@@ -361,20 +362,25 @@ class DynGraph(nx.Graph):
         # add the interaction
         datadict = self._adj[u].get(v, self.edge_attr_dict_factory())
 
-        if 't' in datadict:
-            app = datadict['t']
+        if "t" in datadict:
+            app = datadict["t"]
             max_end = app[-1][1]
 
             if max_end == app[-1][0] and t[0] == app[-1][0] + 1:
 
                 app[-1] = [app[-1][0], t[1]]
-                if app[-1][0] + 1 in self.time_to_edge and (u, v, "+") in self.time_to_edge[app[-1][0] + 1]:
+                if (
+                    app[-1][0] + 1 in self.time_to_edge
+                    and (u, v, "+") in self.time_to_edge[app[-1][0] + 1]
+                ):
                     del self.time_to_edge[app[-1][0] + 1][(u, v, "+")]
 
             else:
                 if t[0] < app[-1][0]:
-                    raise ValueError("The specified interaction extension is broader than "
-                                     "the ones already present for the given nodes.")
+                    raise ValueError(
+                        "The specified interaction extension is broader than "
+                        "the ones already present for the given nodes."
+                    )
 
                 if t[0] <= max_end < t[1]:
                     app[-1][1] = t[1]
@@ -384,11 +390,17 @@ class DynGraph(nx.Graph):
                         del self.time_to_edge[t[0]][(u, v, "+")]
 
                 elif max_end == t[0] - 1:
-                    if max_end + 1 in self.time_to_edge and (u, v, "+") in self.time_to_edge[max_end + 1]:
+                    if (
+                        max_end + 1 in self.time_to_edge
+                        and (u, v, "+") in self.time_to_edge[max_end + 1]
+                    ):
                         del self.time_to_edge[max_end + 1][(u, v, "+")]
                         if self.edge_removal:
-                            if max_end + 1 in self.time_to_edge and (u, v, '-') in self.time_to_edge[max_end + 1]:
-                                del self.time_to_edge[max_end + 1][(u, v, '-')]
+                            if (
+                                max_end + 1 in self.time_to_edge
+                                and (u, v, "-") in self.time_to_edge[max_end + 1]
+                            ):
+                                del self.time_to_edge[max_end + 1][(u, v, "-")]
                             if t[1] + 1 in self.time_to_edge:
                                 self.time_to_edge[t[1] + 1][(u, v, "-")] = None
                             else:
@@ -398,7 +410,7 @@ class DynGraph(nx.Graph):
                 else:
                     app.append(t)
         else:
-            datadict['t'] = [t]
+            datadict["t"] = [t]
 
         if e is not None:
             span = range(t[0], t[1] + 1)
@@ -442,8 +454,7 @@ class DynGraph(nx.Graph):
         """
         # set up attribute dict
         if t is None:
-            raise nx.NetworkXError(
-                "The t argument must be a specified.")
+            raise nx.NetworkXError("The t argument must be a specified.")
         # process ebunch
         for ed in ebunch:
             self.add_interaction(ed[0], ed[1], t, e)
@@ -919,11 +930,12 @@ class DynGraph(nx.Graph):
         [(0, 1)]
         """
         from .dyndigraph import DynDiGraph
+
         G = DynDiGraph()
         G.name = self.name
         G.add_nodes_from(self)
         for it in self.interactions_iter():
-            for t in it[2]['t']:
+            for t in it[2]["t"]:
                 G.add_interaction(it[0], it[1], t=t[0], e=t[1])
 
         G.graph = deepcopy(self.graph)
@@ -993,7 +1005,7 @@ class DynGraph(nx.Graph):
             I = t_to
             F = t_from
 
-            for a, b in ts['t']:
+            for a, b in ts["t"]:
                 if I <= a and b <= F:
                     H.add_interaction(u, v, a, b)
                 elif a <= I and F <= b:
@@ -1113,7 +1125,7 @@ class DynGraph(nx.Graph):
                         flag = True
         else:
             # interaction inter event
-            evt = self._adj[u][v]['t']
+            evt = self._adj[u][v]["t"]
             delta = []
 
             for i in evt:

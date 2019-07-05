@@ -1,10 +1,12 @@
-from ...utils import make_str
-from .... import dynetx as dn
 from itertools import chain, count
+
 import past
 
-__all__ = ['node_link_data', 'node_link_graph']
-_attrs = dict(id='id', source='source', target='target')
+from .... import dynetx as dn
+from ...utils import make_str
+
+__all__ = ["node_link_data", "node_link_graph"]
+_attrs = dict(id="id", source="source", target="target")
 
 
 def node_link_data(G, attrs=_attrs):
@@ -48,17 +50,17 @@ def node_link_data(G, attrs=_attrs):
     --------
     node_link_graph
     """
-    id_ = attrs['id']
+    id_ = attrs["id"]
 
     data = {}
-    data['directed'] = G.is_directed()
-    data['graph'] = G.graph
-    data['nodes'] = [dict(chain(G.node[n].items(), [(id_, n)])) for n in G]
-    data['links'] = []
+    data["directed"] = G.is_directed()
+    data["graph"] = G.graph
+    data["nodes"] = [dict(chain(G.node[n].items(), [(id_, n)])) for n in G]
+    data["links"] = []
     for u, v, timeline in G.interactions_iter():
-        for t in timeline['t']:
-            for tid in past.builtins.xrange(t[0], t[-1]+1):
-                data['links'].append({"source": u, "target": v, "time": tid})
+        for t in timeline["t"]:
+            for tid in past.builtins.xrange(t[0], t[-1] + 1):
+                data["links"].append({"source": u, "target": v, "time": tid})
 
     return data
 
@@ -97,21 +99,21 @@ def node_link_graph(data, directed=False, attrs=_attrs):
     node_link_data
     """
 
-    directed = data.get('directed', directed)
+    directed = data.get("directed", directed)
     graph = dn.DynGraph()
     if directed:
         graph = graph.to_directed()
 
-    id_ = attrs['id']
+    id_ = attrs["id"]
     mapping = []
-    graph.graph = data.get('graph', {})
+    graph.graph = data.get("graph", {})
     c = count()
-    for d in data['nodes']:
+    for d in data["nodes"]:
         node = d.get(id_, next(c))
         mapping.append(node)
         nodedata = dict((make_str(k), v) for k, v in d.items() if k != id_)
         graph.add_node(node, **nodedata)
-    for d in data['links']:
-        graph.add_interaction(d['source'], d["target"], d['time'])
+    for d in data["links"]:
+        graph.add_interaction(d["source"], d["target"], d["time"])
 
     return graph
