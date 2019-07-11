@@ -109,9 +109,16 @@ class NegmasMonitorFile(AIOEventHandler):
 async def watch_fs(path):
     watch = AIOWatchdog(path, event_handler=NegmasMonitorFile(log_folder=path))
     watch.start()
-    for _ in range(20):
+    import threading
+        
+    print('monitor threading is {}'. format(threading.current_thread()))
+    import os
+
+    print("monitor process id is {}".format(os.getpid()))
+    for _ in range(100):
         await asyncio.sleep(1)
     watch.stop()
+    print("Finish monitoring task")
 
 class NegmasMonitorMemory():
     pass

@@ -1,4 +1,4 @@
-import datetime
+import datetime, time
 import json
 import os
 from dataclasses import dataclass
@@ -9,13 +9,15 @@ from networkx import DiGraph
 
 from app import FlaskAppWrapper
 from backend.api import draw, nnegmas, web
-from backend.api.nnegmas import negmas_draw
+from backend.api.nnegmas import negmas_draw, watch_fs
 from backend.src.pyecharts import options as opts
 from backend.src.pyecharts.charts import Bar3D, Geo, Graph, Grid, Liquid, Page
 from backend.src.pyecharts.commons.types import (Numeric, Optional, Sequence,
                                                  Union)
 from backend.src.pyecharts.components import Table
 from backend.src.pyecharts.globals import ChartType, SymbolType
+import asyncio
+from multiprocessing import Process
 
 """
 mode:   'online_memory':  receive the data when run the simulator and at the same time update the graph (memory mode)
@@ -80,7 +82,7 @@ class Setup_Graph:
     node_name: list
 
 
-class DrawPyechart(object):
+class VNegmas(object):
     def __init__(
         self,
         g: Union[DiGraph, None] = None,
@@ -125,8 +127,20 @@ class DrawPyechart(object):
         # self.a.run()
 
     def run(self):
-        self.a.run()
+        self.server = Process(target=self.a.run)
+        self.server.start()
+        import threading
+        
+        print('vnegmas threading is {}'. format(threading.current_thread()))
+        import os
 
+        print("vnegmas process id is {}".format(os.getpid()))
+        # self.a.run()
+    
+    def stop(self):
+        self.server.terminate()
+        self.server.join()
+    
     def _init(self):
         self.linestyleopts = [opts.LineStyleOpts(width=5)]
 
@@ -405,7 +419,20 @@ class DrawPyechart(object):
         return self.configSetUp.get_system_config
 
 
+async def vnegmas():
+    vnegmas = VNegmas(name="VNegmas")
+    vnegmas.run()
+    await asyncio.sleep(100)
+    vnegmas.stop()
+    print("Finish vnegmas task!")
+
 if __name__ == "__main__":
-    dp = DrawPyechart(name="DrawPyecharts")
-    dp.run()
+    start = time.time()
+    tasks = [vnegmas(), watch_fs('../log_folder')]
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(asyncio.wait(tasks))
+    finally:
+        loop.close()
     # table_base().render()
+    print("finished all tasks! time %.5f" % float(time.time()-start))

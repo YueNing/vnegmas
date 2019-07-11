@@ -1,17 +1,17 @@
 import configparser
-
+import os
 
 def _get_config(filename):
     try:
         config = configparser.ConfigParser()
-        config.read(filename)
+        config.read(os.path.join(os.path.dirname(__file__) + filename))
         return config
     except Exception as e:
         print("open config file error please confirm the path of ini file is right", e)
 
 
 def _get_world_config(
-    filename: str = "backend/src/configs/world_config.ini"
+    filename: str = "/world_config.ini"
 ) -> configparser.ConfigParser:
     """
         >>> get_world_config(filename='./world_config_ini') #doctest: +ELLIPSIS
@@ -22,7 +22,7 @@ def _get_world_config(
 
 
 def _get_web_config(
-    filename: str = "backend/src/configs/web_config.ini"
+    filename: str = "/web_config.ini"
 ) -> configparser.ConfigParser:
     """
         >>> get_world_config(filename='./web_config_ini') #doctest: +ELLIPSIS
