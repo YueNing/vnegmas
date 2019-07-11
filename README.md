@@ -15,4 +15,4 @@
 
 # Run
 
-`python ech.py`
+`python vnegmas.py`
