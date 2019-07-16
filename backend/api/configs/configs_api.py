@@ -1,6 +1,6 @@
 import configparser
 
-from ...src.configs import _get_web_config, _get_world_config
+from ...src.configs import _get_web_config, _get_world_config, _get_real_time_config
 
 
 def get_web_config(filename: str = None) -> configparser.ConfigParser:
@@ -16,6 +16,13 @@ def get_world_config(filename: str = None) -> configparser.ConfigParser:
         c = _get_world_config(filename)
     else:
         c = _get_world_config()
+    return c
+
+def get_real_time_config(filename: str = None) -> configparser.ConfigParser:
+    if filename is not None:
+        c = _get_real_time_config(filename)
+    else:
+        c = _get_real_time_config()
     return c
 
 # TODO: update web config

@@ -32,8 +32,13 @@ mode = "debug"
 
 
 class ConfigSetUp:
+    """
+        Class used for
+        All information about config 
+    """
     def __init__(self):
         self._config = web.get_web_config()
+        self._real_time_config = web.get_real_time_config()
         self._init_my_config()
         self._init_system_config()
 
@@ -67,10 +72,19 @@ class ConfigSetUp:
         return self.system_config
 
     def save_my_config(self, content):
-        print("my config {}".format(content))
+        print(f"my config {content}")
 
+    # TODO: system config update
     def save_system_config(self, content):
-        print("system config {}".format(content))
+        print(f"system config {content}")
+    
+    # TODO: real time config update
+    def save_real_time_config(self, content):
+        self._real_time_config.update(content)
+        print(f"real time update {content}")
+    
+    def get_real_time_config(self):
+        return self._real_time_config.config
 
 
 @dataclass
@@ -124,6 +138,7 @@ class VNegmas(object):
         self.worldname = "None"
         self.a = FlaskAppWrapper(self.name, static_folder=static_folder)
         self._endpoints()
+        self._init_configSetup()
         # self.a.run()
 
     def run(self):
@@ -198,12 +213,33 @@ class VNegmas(object):
             view_func=self.save_system_config,
             methods=["POST", "GET"],
         )
+        self.a.add_endpoint(
+            rule="/config/save_real_time",
+            endpoint="saverealtimeconfig",
+            view_func=self.save_real_time_config,
+            methods=["POST", "GET"],
+        )
 
     def index(self):
         return render_template("index.html")
 
+    def _get_real_time_config(self):
+        real_time_config = self.configSetUp.get_real_time_config()
+        self.real_time_selected_charts = []
+        for mode in real_time_config._sections['mode']:
+            if real_time_config._sections['mode'][mode] == 'True':
+                self.real_time_mode = mode
+        for chart in real_time_config._sections['charts']:
+            if real_time_config._sections['charts'][chart] == "True":
+                self.real_time_selected_charts.append(chart)
+        content = {'type':"real time config", "mode": real_time_config._sections['mode'], 
+                        "charts": real_time_config._sections['charts'], "charts_size":len(real_time_config._sections['charts']) // 2, "selected_mode":self.real_time_mode, "selected_charts":self.real_time_selected_charts}
+        return content
+    
     def real_time(self):
-        return render_template("_real_time.html")
+        content = self._get_real_time_config()
+        print(f'real time config {content}')
+        return render_template("_real_time.html", content=content)
 
     def my_config(self):
         return render_template("_config_my.html")
@@ -238,7 +274,20 @@ class VNegmas(object):
         self.configSetUp.save_system_config(request.form)
         content = self._get_system_config()[request.form.get("sub")]["content"]
         print(request.form.getlist("competitors"))
-        return render_template("result.html", content=content)
+        content = self._get_system_config()["system_general"]["content"]
+        # return render_template("result.html", content=content)
+        return render_template(
+            "_config_system.html", title="General Setting", content=content
+        )
+
+    def save_real_time_config(self):
+        if not hasattr(self, "configSetUp"):
+            self._init_configSetup()
+        self.configSetUp.save_real_time_config(request.form)
+        # new_content = self.configSetUp.get_real_time_config()
+        content = self._get_real_time_config()
+        print(f'new content {content}')
+        return jsonify(content)
 
     def save_my_config(self):
         if not hasattr(self, "configSetUp"):

@@ -1,5 +1,6 @@
 import configparser
 import os
+from .managerchart import ManagerChart
 
 def _get_config(filename):
     try:
@@ -43,6 +44,11 @@ def _get_web_config(
                 config._sections[section][key]
             )
     return config
+
+def _get_real_time_config(filename: str = "/real_time.ini"):
+    mc = ManagerChart(filename)
+    return mc
+
 
 
 if __name__ == "__main__":

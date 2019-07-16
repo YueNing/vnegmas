@@ -1,4 +1,4 @@
-<form>
+<form id="realtimeconfig">
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -11,28 +11,53 @@
                         <div class="modal-body">
                             <div class="container-fluid">
                                 <div class="form-group row">
-                                    <select class="selectpicker">
-                                            <option>Online Serial</option>
-                                            <option>Online File Parallel</option>
-                                    </select>
+                                    {% for key in content['mode'] %}
+                                        <div class="form-check form-check-inline col-sm-4">
+                                            {% if content['mode'][key] == "True" %}
+                                                <input class="form-check-input" type="radio" name="realtimemode" id="{{key}}" value="{{key}}" checked>
+                                            {% else %}
+                                            <input class="form-check-input" type="radio" name="realtimemode" id="{{key}}" value="{{key}}">
+                                            {% endif %}
+                                            <label class="form-check-label" for="inlineRadio1"></label>{{ key }}</label>
+                                        </div>
+                                    {% endfor %}
                                 </div>
+                               
                                 <div class="form-group row">
-                                    <div class="custom-control custom-checkbox col-sm-6">
-                                        <input type="checkbox" class="custom-control-input" id="contract signed" name="contract signed" checked>
-                                        <label class="custom-control-label">contract signed</label>
+                                    {% for key in content['charts'] %}
+                                    <div class="custom-control custom-checkbox col-sm-5">
+                                        {% if content['charts'][key] == "True" %}
+                                        <input type="checkbox" class="form-check-input" id="{{key}}" name="{{key}}" checked>
+                                        {% else %}
+                                        <input type="checkbox" class="form-check-input" id="{{key}}" name="{{key}}">
+                                        {% endif %}
+                                        <label class="form-check-label">{{key}}</label>
                                     </div>
-                                    <div class="custom-control custom-checkbox col-sm-6">
-                                        <input type="checkbox" class="custom-control-input" id=" Product produce" name=" Product produce " checked>
-                                        <label class="custom-control-label"> Product produce </label>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <input type="button" class="btn btn-primary" onclick="PostConfigRealTime('/config/save_real_time')" value="Save changes" data-dismiss="modal"></button>
                         </div>
                     </div>
                 </div>
         </div>
     </form>
+<script>
+    function PostConfigRealTime(url) {
+        $.ajax({
+            type:"POST",
+            url:url,
+            data: $('#realtimeconfig').serialize(),
+            success: function(data) {
+                // alert(data['message']);
+                // TODO update the real time page
+            },
+            error: function(request) {
+                alert("connect Error: "+ request.error);
+            }
+        })
+    }
+</script>
