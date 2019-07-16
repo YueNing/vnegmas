@@ -18,7 +18,7 @@
                             </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <div class="card text-white bg-info mb-3" style="max-width: 27rem;">
                         <div class="card-header text-center">Total Market Size</div>
                             <div class="card-body">
@@ -39,6 +39,18 @@
             <div class="col-2">
                 <div class="card-body">
                     <div id="liquid" style="width: 100%; min-height: 110px"></div>                                    
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="row">
+                    <a class="btn btn-outline-info" onclick="run('/run')" href="#" role="button"><i class="fas fa-play" style="color:#89D4DF"></i> Run   </a>
+                </div>
+                <div class="clearfix" style="margin-bottom: 40px;"></div>
+                <div class="row">
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModalCenter">
+                            <i class="fas fa-cog" style="color:#89D4DF"></i>Settings
+                    </button>
+                    {% include "_select_charts_modal.html" %}
                 </div>
             </div>
         </div>

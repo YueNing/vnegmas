@@ -22,7 +22,7 @@ def tournament_progress_callback(results: WorldRunResults):
 def world_progress_callback(world: SCMLWorld):
     print("current_step {}".format(world.current_step))
     ### Event
-    Event_Porcess_New_Step = "Porcess_New_Step"
+    Event_Porcess_New_Step = "online_serial"
     glovar.world_recall_reuslt_dict["Event_Porcess_New_Step"] = Event_Porcess_New_Step
     listener1 = ListenerTypeOne(
         "naodongbanana", world_recall_reuslt_dict=glovar.world_recall_reuslt_dict

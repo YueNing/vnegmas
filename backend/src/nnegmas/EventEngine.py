@@ -141,13 +141,14 @@ class Public_NegmasAccount:
 
     def processNewStep(self, eventType, world: SCMLWorld = None):
         event = Event(eventType)
-        if world is not None:
-            event.dict = self._process_world(world)
-        else:
-            event.dict["current_step"] = -1
-            event.dict["scmlworld"] = None
-        self._eventManager.sendEvent(event)
-        print("send inforamtion about new step")
+        if event.type == "online_serial":
+            if world is not None:
+                event.dict = self._process_world(world)
+            else:
+                event.dict["current_step"] = -1
+                event.dict["scmlworld"] = None
+            self._eventManager.sendEvent(event)
+            print("send inforamtion about new step")
 
 
 class ListenerTypeOne:
@@ -158,6 +159,12 @@ class ListenerTypeOne:
     def showNewStep(self, event):
         glovar.step = event.dict["current_step"]
         glovar.scmlworld = event.dict["scmlworld"]
+        import threading
+        
+        print('event listen threading is {}'. format(threading.current_thread()))
+        import os
+
+        print("event listen process id is {}".format(os.getpid())) 
         if self._world_recall_reuslt_dict is not None:
             for k, value in event.dict.items():
                 self._world_recall_reuslt_dict[k] = value
