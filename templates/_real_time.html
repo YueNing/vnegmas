@@ -1,99 +1,86 @@
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-2">
-                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-center">Running Time</div>
-                            <div class="card-body">
-                                <h5 align="center" id="runningtime" class="card-title">Info card title</h5>
-                                <!-- <span class="card-text">Some </span> -->
-                            </div>
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-center">Current Step</div>
-                            <div class="card-body">
-                                <h5 align="center" id="current_step" class="card-title">Info card title</h5>
-                                <!-- <span class="card-text"> </span> -->
-                            </div>
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="card text-white bg-info mb-3" style="max-width: 27rem;">
-                        <div class="card-header text-center">Total Market Size</div>
-                            <div class="card-body">
-                                <h5 align="center" class="card-title" id="market_size_total">Info card title</h5>
-                                <!-- <span class="card-text"></span> -->
-                            </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card text-white bg-info mb-3" style="max-width: 27rem;">
-                        <div class="card-header text-center">World name now</div>
-                            <div class="card-body center">
-                                <h5 align="center" id="worldname" class="card-title">Info card title</h5>
-                                <!-- <span class="card-text"></span> -->
-                            </div>
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="card-body">
-                    <div id="liquid" style="width: 100%; min-height: 110px"></div>                                    
-                </div>
-            </div>
-            <div class="col-1">
-                <div class="row">
-                    <a class="btn btn-outline-info" onclick="run('/run')" href="#" role="button"><i class="fas fa-play" style="color:#89D4DF"></i> Run   </a>
-                </div>
-                <div class="clearfix" style="margin-bottom: 40px;"></div>
-                <div class="row">
-                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModalCenter">
-                            <i class="fas fa-cog" style="color:#89D4DF"></i>Settings
-                    </button>
-                    {% include "_select_charts_modal.html" %}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div id="draggable" class="card">
-                    <div class="card-header alert-dark">
-                        Graph-Negmas Contract Signed
-                    </div>
-                    <div class="card-body">
-                        <div id="graph" style="width: 100%; min-height: 300px"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                                <div class="card-header alert-dark">
-                                    Product produce
-                                </div>
+        {% include "_select_charts_modal.html" %}
+        <div class="gridster">
+            <ul style="list-style-type: none;">
+                <li data-row="1" data-col="1" data-sizex="2" data-sizey="2" >
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                            <div class="card-header text-center">Running Time</div>
                                 <div class="card-body">
-                                    <div id="bar_product_produce" style="width: 100%; min-height: 300px"></div>                                    
+                                    <h5 align="center" id="runningtime" class="card-title">Info card title</h5>
                                 </div>
-                        </div>
                     </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
+                </li>
+                <li data-row="1" data-col="3" data-sizex="2" data-sizey="2"> 
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                            <div class="card-header text-center">Current Step</div>
+                                <div class="card-body">
+                                    <h5 align="center" id="current_step" class="card-title">Info card title</h5>
+                                </div>
+                    </div>
+                </li>
+                <li data-row="1" data-col="5" data-sizex="3" data-sizey="2">
+                    <div class="card text-white bg-info mb-3" style="max-width: 27rem;">
+                            <div class="card-header text-center">Total Market Size</div>
+                                <div class="card-body">
+                                    <h5 align="center" class="card-title" id="market_size_total">Info card title</h5>
+                                </div>
+                    </div>
+                </li>
+                <li data-row="1" data-col="8" data-sizex="3" data-sizey="2">
+                    <div class="card text-white bg-info mb-3" style="max-width: 27rem;">
+                            <div class="card-header text-center">World name now</div>
+                                <div class="card-body center">
+                                    <h5 align="center" id="worldname" class="card-title">Info card title</h5>
+                                </div>
+                    </div>
+                </li>
+                <li data-row="1" data-col="11" data-sizex="2" data-sizey="2">
+                    <div class="card-body">
+                            <div id="liquid" style="width: 100%; min-height: 110px"></div>                                    
+                        </div>
+                </li>
+                <li data-row="1" data-col="12" data-sizex="1" data-sizey="2">
+                        <div class="row">
+                            <a class="btn btn-outline-info" onclick="run('/run')" href="#" role="button"><i class="fas fa-play" style="color:#89D4DF"></i> Run   </a>
+                        </div>
+                        <div class="clearfix" style="margin-bottom: 40px;"></div>
+                        <div class="row">
+                            <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <i class="fas fa-cog" style="color:#89D4DF"></i>Settings
+                            </button>
+                        </div>
+                </li>
+                <li data-row="3" data-col="1" data-sizex="8" data-sizey="6">
+                    <div class="card">
+                            <div class="card-header alert-dark">
+                                Graph-Negmas Contract Signed
+                            </div>
+                            <div class="card-body">
+                                <div id="graph" style="width: 100%; min-height: 300px"></div>
+                            </div>
+                    </div>
+                </li>
+                <li data-row="3" data-col="9" data-sizex="5" data-sizey="6">
+                    <div class="card">
+                            <div class="card-header alert-dark">
+                                Product produce
+                            </div>
+                            <div class="card-body">
+                                <div id="bar_product_produce" style="width: 100%; min-height: 300px"></div>                                    
+                            </div>
+                    </div>
+                </li>
+                <li data-row="9" data-col="1" data-sizex="8" data-sizey="6">
                     <div class="card">
                             <div class="card-header alert-dark">
                                 Negmas-Agents Activation Level
                             </div>
                             <div class="card-body">
-                                <div id="activation" style="width: 100%; min-height: 300px">                                                                      
+                                <div id="activation" style="width: 100%; min-height: 300px"></div>                                                                      
                             </div>
                     </div>
-                </div>
-            </div>
-            <div  class="col">
+                </li>
+                <li data-row="9" data-col="9" data-sizex="5" data-sizey="6">
                     <div class="card">
                             <div class="card-header alert-dark">
                                     Buyer and Seller 
@@ -102,10 +89,20 @@
                                 <div id="grid" style="width: 100%; min-height: 300px"> </div>                                                                                                       
                             </div>
                     </div>
-            </div>
+                </li>
+            </ul>
         </div>
     </div>
     <script>
+        //instantiate gridster
+
+        $(".gridster > ul").gridster({
+
+            widget_margins: [8, 8],
+
+            widget_base_dimensions: [100, 55]
+
+        });
         // $('#draggable').draggable();
         function run(url){
             $.ajax({
