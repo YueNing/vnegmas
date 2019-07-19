@@ -1,4 +1,3 @@
-#%%
 import datetime
 from multiprocessing import Process
 
@@ -13,7 +12,6 @@ from vnegmas.backend.src.nnegmas.EventEngine import *
 from vnegmas.backend.src.nnegmas.EventEngine import EventEngine, ListenerTypeOne, Public_NegmasAccount
 from vnegmas.backend.src.nnegmas.my_factory_managers import MyFactoryManager
 from vnegmas.backend.src.nnegmas.showProcess import *
-
 
 def tournament_progress_callback(results: WorldRunResults):
     pass
@@ -72,13 +70,13 @@ def run_negmas():
     print(results.total_scores)
     endtime = datetime.datetime.now()
     print(endtime - starttime)
-    buyer_utility = LinearUtilityAggregationFunction(
-        {
-            "price": lambda x: -x,
-            "number of items": lambda x: 0.5 * x,
-            "delivery": {"delivered": 1.0, "not delivered": 0.0},
-        }
-    )
+    # buyer_utility = LinearUtilityAggregationFunction(
+    #     {
+    #         "price": lambda x: -x,
+    #         "number of items": lambda x: 0.5 * x,
+    #         "delivery": {"delivered": 1.0, "not delivered": 0.0},
+    #     }
+    # )
 
 
 # TODO test for anac2019 tournament

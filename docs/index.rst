@@ -100,7 +100,7 @@ For Data Analyser
 .. code-block:: python
 
     import vnegmas
-    from vnegmas import NegmasDataBridge, DataVegmasBridge
+    from vnegmas import NegmasDataBridge, DataVNegmasBridge
     n_d_b = NegmasDataBridge()
     data  = n_d_b.get_data(type="breach")
 
@@ -108,7 +108,7 @@ For Data Analyser
 
 .. code-block:: python
 
-    d_b_b = DataVegmasBridge()
+    d_b_b = DataVNegmasBridge()
 
     def get_sum(data):
         sum = 0
@@ -152,7 +152,7 @@ For Developer of VNEMGAS
 
 - Monitor
 - NegmasDataBridge
-- DataVegmasBridge
+- DataVNegmasBridge
 - EventEngine(send data to Analyse module)
 - Analyse and Process(verify the Data, pick up Data)
 - Data-Pyecharts
