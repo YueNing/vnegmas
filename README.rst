@@ -90,7 +90,7 @@ For Data Analyser
   interface. Finally, data analyser can simply and quickly get
   the data that be needed, and send the data to vnegmas.
 
-| When you want to know the details of the dataflow of vnegmas, this page is useful. :ref:`dataflow`
+| When you want to know the details of the dataflow of vnegmas, this page is useful. `dataflow <https://github.com/YueNing/vnegmas/blob/master/docs/dataflow.rst>`_
   Otherwise, you can skip this page. Look below.
 
 | Below is relative command and code(example).
@@ -140,7 +140,7 @@ For Data Analyser
     vnegmas.run()
 
 
-:ref:`api`
+`api <https://github.com/YueNing/vnegmas/blob/master/docs/api.rst>`_
 
 For Developer of VNEMGAS
 =====================================
@@ -162,20 +162,4 @@ For Developer of VNEMGAS
 | reduce the small parts, mainly three parts are monitor negmas,
   data analyse middle layer and view layout.
 
-The description of every module, please go to this page :ref:`develop`
-
-.. toctree::
-   :maxdepth: 2
-
-   use
-   dataflow
-   develop
-   api
-
-
-Indices and tables
-==================
-
-* :ref:`index`
-* :ref:`develop`
-* :ref:`search`
+The description of every module, please go to this page :`develop <https://github.com/YueNing/vnegmas/blob/master/docs/develop.rst>`_
