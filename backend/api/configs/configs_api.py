@@ -1,6 +1,6 @@
 import configparser
 
-from ...src.configs import _get_web_config, _get_world_config, _get_real_time_config
+from vnegmas.backend.src.configs import _get_web_config, _get_world_config, _get_real_time_config
 
 
 def get_web_config(filename: str = None) -> configparser.ConfigParser:

@@ -1,5 +1,5 @@
-from ...src.nnegmas import run_negmas as _run_negmas
-from ..configs import get_web_config, get_world_config
+from vnegmas.backend.src.nnegmas import run_negmas as _run_negmas
+from vnegmas.backend.api.configs import get_web_config, get_world_config
 from typing import Optional
 
 def run_negmas(config: dict = None) -> None:

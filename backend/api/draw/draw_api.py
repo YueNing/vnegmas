@@ -1,10 +1,10 @@
 import os
 import sys
 
-from ...src.draw import (_bar3d_agent_activation, _bar_product_produce,
+from vnegmas.backend.src.draw import (_bar3d_agent_activation, _bar_product_produce,
                          _graph_contracted_signed, _grid_buyer_seller,
                          _liquid_process)
-from ...src.pyecharts.charts import Bar3D, Graph, Grid, Liquid, Page
+from vnegmas.backend.src.pyecharts.charts import Bar3D, Graph, Grid, Liquid, Page
 
 
 def graph_contracted_signed(config: dict = None, nodes: list = None) -> Graph:

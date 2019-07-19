@@ -7,8 +7,8 @@ import networkx as nx
 from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Slider
 
-from .. import dynetx as dnx
-from . import glovar, negmas_draw
+from vnegmas.backend.src import dynetx as dnx
+from vnegmas.backend.src.nnegmas import glovar, negmas_draw
 
 
 class ShowProcess:

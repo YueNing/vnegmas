@@ -122,7 +122,7 @@ class MyFactoryManager(DoNothingFactoryManager):
         optimism: float = 0.0,
         negotiator_type: Union[
             str, Type[Negotiator]
-        ] = "backend.src.nnegmas.my_mechanism.MyTestNegotiator",
+        ] = "vnegmas.backend.src.nnegmas.my_mechanism.MyTestNegotiator",
         negotiator_params: Optional[Dict[str, Any]] = None,
         n_retrials=5,
         use_consumer=True,

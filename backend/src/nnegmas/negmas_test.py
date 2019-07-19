@@ -8,11 +8,11 @@ from negmas.apps.scml.utils import anac2019_tournament
 from negmas.tournaments import TournamentResults, WorldRunResults, tournament
 from negmas.utilities import LinearUtilityAggregationFunction
 
-from . import glovar
-from .EventEngine import *
-from .EventEngine import EventEngine, ListenerTypeOne, Public_NegmasAccount
-from .my_factory_managers import MyFactoryManager
-from .showProcess import *
+from vnegmas.backend.src.nnegmas import glovar
+from vnegmas.backend.src.nnegmas.EventEngine import *
+from vnegmas.backend.src.nnegmas.EventEngine import EventEngine, ListenerTypeOne, Public_NegmasAccount
+from vnegmas.backend.src.nnegmas.my_factory_managers import MyFactoryManager
+from vnegmas.backend.src.nnegmas.showProcess import *
 
 
 def tournament_progress_callback(results: WorldRunResults):

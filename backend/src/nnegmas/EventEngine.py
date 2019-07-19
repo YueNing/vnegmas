@@ -9,8 +9,8 @@ from multiprocessing import Process, Queue
 
 from negmas.apps.scml import SCMLWorld
 
-from ...api import configs
-from . import glovar
+from vnegmas.backend.api import configs
+from vnegmas.backend.src.nnegmas import glovar
 
 
 class EventEngine(object):

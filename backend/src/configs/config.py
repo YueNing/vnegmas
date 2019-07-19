@@ -1,6 +1,6 @@
 import configparser
 import os
-from .managerchart import ManagerChart
+from vnegmas.backend.src.configs.managerchart import ManagerChart
 
 def _get_config(filename):
     try:

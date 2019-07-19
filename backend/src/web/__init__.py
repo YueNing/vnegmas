@@ -1,1 +1,1 @@
-from .web import _monitor_every_info
+from vnegmas.backend.src.web.web import _monitor_every_info

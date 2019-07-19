@@ -7,15 +7,15 @@ from flask import Flask, render_template, request
 from flask.json import jsonify
 from networkx import DiGraph
 
-from app import FlaskAppWrapper
-from backend.api import draw, nnegmas, web
-from backend.api.nnegmas import negmas_draw, watch_fs
-from backend.src.pyecharts import options as opts
-from backend.src.pyecharts.charts import Bar3D, Geo, Graph, Grid, Liquid, Page
-from backend.src.pyecharts.commons.types import (Numeric, Optional, Sequence,
+from .app import FlaskAppWrapper
+from .backend.api import draw, nnegmas, web
+from .backend.api.nnegmas import negmas_draw, watch_fs
+from .backend.src.pyecharts import options as opts
+from .backend.src.pyecharts.charts import Bar3D, Geo, Graph, Grid, Liquid, Page
+from .backend.src.pyecharts.commons.types import (Numeric, Optional, Sequence,
                                                  Union)
-from backend.src.pyecharts.components import Table
-from backend.src.pyecharts.globals import ChartType, SymbolType
+from .backend.src.pyecharts.components import Table
+from .backend.src.pyecharts.globals import ChartType, SymbolType
 import asyncio
 from multiprocessing import Process
 
@@ -78,10 +78,8 @@ class ConfigSetUp:
     def save_system_config(self, content):
         print(f"system config {content}")
     
-    # TODO: real time config update
     def save_real_time_config(self, content):
         self._real_time_config.update(content)
-        print(f"real time update {content}")
     
     def get_real_time_config(self):
         return self._real_time_config.config
@@ -102,7 +100,8 @@ class VNegmas(object):
         g: Union[DiGraph, None] = None,
         node_name=None,
         name=__name__,
-        static_folder="templates",
+        template_folder="./templates",
+        static_folder="./stats",
         mode="debug",
     ):
         if mode == "debug":
@@ -136,7 +135,11 @@ class VNegmas(object):
         self.show = a
         self.frame = self.show.iter_frame()
         self.worldname = "None"
-        self.a = FlaskAppWrapper(self.name, static_folder=static_folder)
+        self.template_dir = os.path.join(os.path.dirname(__file__), template_folder)
+        self.stats_dir = os.path.join(os.path.dirname(__file__), static_folder)
+        # import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
+        self.a = FlaskAppWrapper(self.name, template_folder=self.template_dir, static_folder=self.stats_dir)
         self._endpoints()
         self._init_configSetup()
         # self.a.run()
@@ -223,6 +226,14 @@ class VNegmas(object):
     def index(self):
         return render_template("index.html")
 
+    #TODO need to define the charts layout, size, position, name, and so on
+    def _selected_charts(self, charts):
+        """
+         define the row, size, name and so on information about charts
+        """
+        selected_charts = [{"name":"", "position":"", "size":"", "description":""}, {}, {}, {}]
+        return selected_charts
+    
     def _get_real_time_config(self):
         real_time_config = self.configSetUp.get_real_time_config()
         self.real_time_selected_charts = []
@@ -238,7 +249,6 @@ class VNegmas(object):
     
     def real_time(self):
         content = self._get_real_time_config()
-        print(f'real time config {content}')
         return render_template("_real_time.html", content=content)
 
     def my_config(self):
@@ -286,7 +296,6 @@ class VNegmas(object):
         self.configSetUp.save_real_time_config(request.form)
         # new_content = self.configSetUp.get_real_time_config()
         content = self._get_real_time_config()
-        print(f'new content {content}')
         return jsonify(content)
 
     def save_my_config(self):
@@ -369,7 +378,7 @@ class VNegmas(object):
         # from backend.src import nnegmas
         from multiprocessing import Process
 
-        self.mode = "online_memory"
+        self.mode = "online_serial"
         self.starttime = datetime.datetime.now()
         ### Negmas
         negmas = Process(target=nnegmas.run_negmas)

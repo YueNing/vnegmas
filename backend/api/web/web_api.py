@@ -1,9 +1,9 @@
 from typing import Optional
 
-from ..configs import get_web_config as _get_web_config
-from ..configs import get_real_time_config as _get_real_time_config
-from ..nnegmas import run_negmas as _run_negmas
-from ...src.web import _monitor_every_info
+from vnegmas.backend.api.configs import get_web_config as _get_web_config
+from vnegmas.backend.api.configs import get_real_time_config as _get_real_time_config
+from vnegmas.backend.api.nnegmas import run_negmas as _run_negmas
+from vnegmas.backend.src.web import _monitor_every_info
 
 def run_negmas():
     try:

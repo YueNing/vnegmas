@@ -94,6 +94,7 @@ class NegmasMonitorFile(AIOEventHandler):
             file_path = event.src_path
             filename = file_path.split('/')[-1]
             world_name = file_path.split('/')[-2]
+            new_content = ''
             if world_name in self.worlds_stats:
                 if filename.startswith('m_'):
                     last_seek = self.worlds_stats[world_name]['stats'][filename]

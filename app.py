@@ -19,8 +19,9 @@ class EndpointAction(object):
 class FlaskAppWrapper(object):
     app = None
 
-    def __init__(self, name=__name__, static_folder="templates"):
-        self.app = Flask(name, static_folder=static_folder)
+    def __init__(self, name=__name__, template_folder="templates", static_folder="stats"):
+        # import pdb; pdb.set_trace()
+        self.app = Flask(name, template_folder=template_folder, static_folder=static_folder)
 
     def run(self):
         return self.app.run()

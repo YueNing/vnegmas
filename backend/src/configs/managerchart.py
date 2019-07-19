@@ -24,19 +24,15 @@ class ManagerChart:
         pass
     
     def update(self, content):
-        print(content)
         for section in self.config.sections():
             for _ in self.config[section]:
                 if _ in content or  _ == content['realtimemode']:
-                    print(f'key {_}')
-                    print('test')
                     if _ == content['realtimemode']:
                         self.config.set(section, content['realtimemode'], 'True')
                     else:
                         self.config.set(section, _, 'True')
                 else:
                     self.config.set(section, _, 'False')
-        print(f"befor write{ self.config._sections}")
         with open(self.absolute_path, "w+") as f:
             self.config.write(f)
     

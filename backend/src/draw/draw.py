@@ -1,8 +1,8 @@
 from networkx import DiGraph
 
-from ..pyecharts import options as opts
-from ..pyecharts.charts import Bar, Bar3D, Graph, Grid, Line, Liquid, Page
-from ..pyecharts.commons.utils import JsCode
+from vnegmas.backend.src.pyecharts import options as opts
+from vnegmas.backend.src.pyecharts.charts import Bar, Bar3D, Graph, Grid, Line, Liquid, Page
+from vnegmas.backend.src.pyecharts.commons.utils import JsCode
 
 
 def _graph_contracted_signed(config: dict = None, nodes: DiGraph = None) -> Graph:
