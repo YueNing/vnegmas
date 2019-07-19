@@ -162,4 +162,4 @@ For Developer of VNEMGAS
 | reduce the small parts, mainly three parts are monitor negmas,
   data analyse middle layer and view layout.
 
-The description of every module, please go to this page :`develop <https://github.com/YueNing/vnegmas/blob/master/docs/develop.rst>`_
+The description of every module, please go to this page `develop <https://github.com/YueNing/vnegmas/blob/master/docs/develop.rst>`_
