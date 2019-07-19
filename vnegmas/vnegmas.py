@@ -147,6 +147,7 @@ class VNegmas(object):
     def run(self):
         self.server = Process(target=self.a.run)
         self.server.start()
+        self.server.join()
         import threading
         
         print('vnegmas threading is {}'. format(threading.current_thread()))
