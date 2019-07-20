@@ -7,15 +7,15 @@ from flask import Flask, render_template, request
 from flask.json import jsonify
 from networkx import DiGraph
 
-from .app import FlaskAppWrapper
-from .backend.api import draw, nnegmas, web
-from .backend.api.nnegmas import negmas_draw, watch_fs
-from .backend.src.pyecharts import options as opts
-from .backend.src.pyecharts.charts import Bar3D, Geo, Graph, Grid, Liquid, Page
-from .backend.src.pyecharts.commons.types import (Numeric, Optional, Sequence,
+from vnegmas.app import FlaskAppWrapper
+from vnegmas.backend.api import draw, nnegmas, web
+from vnegmas.backend.api.nnegmas import negmas_draw, watch_fs
+from vnegmas.backend.src.pyecharts import options as opts
+from vnegmas.backend.src.pyecharts.charts import Bar3D, Geo, Graph, Grid, Liquid, Page
+from vnegmas.backend.src.pyecharts.commons.types import (Numeric, Optional, Sequence,
                                                  Union)
-from .backend.src.pyecharts.components import Table
-from .backend.src.pyecharts.globals import ChartType, SymbolType
+from vnegmas.backend.src.pyecharts.components import Table
+from vnegmas.backend.src.pyecharts.globals import ChartType, SymbolType
 import asyncio
 from multiprocessing import Process
 

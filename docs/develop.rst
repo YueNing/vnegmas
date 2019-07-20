@@ -16,6 +16,13 @@ Monitor
 | Base on this mode, that means we decide to use **serial** in NEGMAS,
   the description of this mode is here `serial NEGMAS <https://negmas.readthedocs.io/en/stable/api/negmas.apps.scml.anac2019_tournament.html?highlight=serial#anac2019-tournament>`_
 
+- Online File
+
+| In this mode, use a monitor function watch_fs,
+  call it from vnegmas.backend.api.configs. base on class 
+- Online Memory
+
+
 ******************************
 Negmas Data Bridge
 ******************************
