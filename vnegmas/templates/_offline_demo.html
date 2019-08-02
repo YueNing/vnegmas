@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <div class="gridster">
+         
+            <ul style="list-style-type: none;">
+                {% for  chart in content %}
+                    {% set data_row = (loop.index -1) // 2 * 6 + 1 %}
+                    {% set data_col = (loop.index -1)% 2 * 6 + 1 %}
+                    <li  data-row="{{ data_row }}" data-col="{{ data_col }}" data-sizex=6 data-sizey="6">
+                            <div class="card">
+                                    <div class="card-header alert-dark">
+                                        {{ chart.title }}
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="{{chart.title}}" style="width: 80%; min-height: 200px">
+                                                {{chart.value | safe}}
+                                        </div>                                    
+                                    </div>
+                    </li>
+                {% endfor %}
+            </ul>
+    </div>
+</div>
+<script>
+
+    $(".gridster > ul").gridster({
+
+    widget_margins: [8, 8],
+
+    widget_base_dimensions: [130, 85]
+
+    });
+</script>
+<script>
+    function getData() {
+        $.ajax({
+            
+        });
+    }
+</script>

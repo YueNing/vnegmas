@@ -264,22 +264,23 @@ class VNegmas(object):
             .. versionadd:: v0.2.1
                 the function offline_demo is added
         """
-        def contract_signed():
-            pass
+        from vnegmas.backend.api.data import OfflineData
+        from vnegmas.settings import OFFLINE_DEFAULT_CHARTS
+        from vnegmas.backend.api.draw import get_specific_type_chart
+        offline_data = OfflineData()
+        offline_data._loads()
+        selected_charts = {key: offline_data.stats[key]  for key in OFFLINE_DEFAULT_CHARTS}
+        print(f"selected charts {selected_charts}")
         
-        def product_produce():
-            pass
-        
-        def activation_level():
-            pass
-    
-        contract_signed = contract_signed()
-        product_produce = product_produce()
-        activation_level = activation_level()
-
-        charts = [contract_signed] 
-        content = [c.render_embed() for c in charts]
-
+        data = {}
+        content=[]
+        for key in selected_charts:
+            data["yaxis_data"] = selected_charts[key]
+            data["title"] = key
+            data["xaxis_data"] = [s+1 for s in range(len(selected_charts[key]))]
+            content.insert(0, {"title":key, "value":get_specific_type_chart(data=data, type="line").render_embed()})
+        # content = [c.render_embed() for c in charts]
+        # content = {c.render_embed() for c in charts]
         return render_template("_offline_demo.html", content=content)
 
     def my_config(self):

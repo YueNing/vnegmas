@@ -4,3 +4,4 @@
     in order to be used for data analyse. For example, average dynamic about money, product, breach
 """
 from vnegmas.backend.api.data.produce_demo_data import Faker
+from vnegmas.backend.api.data.dataApi import OfflineData

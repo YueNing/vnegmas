@@ -1,4 +1,18 @@
 from typing import Union
+import json
+
+class OfflineData:
+    """
+        All of datas that can be shown in  VNEGMAS
+    """
+
+    def __init__(self, stats_file_path="/home/naodongbanana/Document/vnegmas/test/logs/tournaments/20190802-2139563Ym-stage-1e+00/20190802-213956nUKr_a2b8-a2b8.00001.00001/stats.json"):
+        self.stats_file_path = stats_file_path
+
+    def _loads(self):
+        with open(self.stats_file_path, 'r') as stats_file:
+            self.stats = json.load(stats_file)
+        return self
 
 class   NegmasDataBridge:
     """
@@ -13,7 +27,7 @@ class   NegmasDataBridge:
         self.data = {}
         self.receive_data_type = receive_data_type
 
-    def get_data(self, tp: Union[st, list]=None):
+    def get_data(self, tp: Union[str, list]=None):
         """
             get the data from negmas
             .. versionadd:: v0.2.1
@@ -105,3 +119,8 @@ class DataVNegmasBridge:
 
         """
         return {data_type:self.processFunc(data_value) for data_type, data_value in self.data.items()}
+
+
+if __name__ == "__main__":
+    offline_data = OfflineData("/home/naodongbanana/Document/vnegmas/test/logs/tournaments/20190802-2139563Ym-stage-1e+00/20190802-213956nUKr_a2b8-a2b8.00001.00001/stats.json")
+    print(offline_data._loads().stats.keys())

@@ -152,6 +152,14 @@ def _grid_buyer_seller(factories, products, data) -> Grid:
     bar.overlap(line)
     return bar
 
+def _get_specific_type_chart(data, type):
+    if type == 'line':
+        c = (
+            Line()
+            .add_xaxis(data['xaxis_data'])
+            .add_yaxis("", data["yaxis_data"], label_opts=opts.LabelOpts(is_show=False))
+        )
+    return c
 
 if __name__ == "__main__":
     c = _liquid_process()

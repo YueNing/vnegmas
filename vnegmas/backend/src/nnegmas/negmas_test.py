@@ -47,7 +47,7 @@ def world_progress_callback(world: SCMLWorld):
     # print('factories {}'.format(world.factories))
 
 
-def run_negmas():
+def run_negmas(log_folder=None, log_file_name=None):
     starttime = datetime.datetime.now()
     results = anac2019_tournament(
         competitors=(MyFactoryManager, GreedyFactoryManager),

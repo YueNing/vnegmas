@@ -1,3 +1,6 @@
+"""
+    Use watchdog to monitor file system
+"""
 import sys
 from os.path import dirname, join
 source_code_path = join(dirname(__file__), '../')
