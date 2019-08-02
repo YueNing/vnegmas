@@ -120,59 +120,52 @@
     </script>
     <script>
         var chart = echarts.init(document.getElementById('graph'), 'white', {renderer: 'canvas'});
-        var liquid_chart = echarts.init(document.getElementById('liquid'), 'white', {renderer: 'canvas'});
-        var grid_chart = echarts.init(document.getElementById('grid'), 'white', {renderer: 'canvas'});
         var bar_product_produce_chart = echarts.init(document.getElementById('bar_product_produce'), 'white', {renderer: 'canvas'});
+        var chart3d = echarts.init(document.getElementById('activation'),  'white', {renderer: 'canvas'});
+        var liquid_chart = echarts.init(document.getElementById('liquid'), 'white', {renderer: 'canvas'});
+        var buy_and_sell = echarts.init(document.getElementById('grid'), 'white', {renderer: 'canvas'});
+        
         
         // var chart3d = echarts.init(document.getElementById('activation'), 'white', {renderer: 'canvas'});
         var old_data = [];
         $(
             function () {
-                getData(chart);
+                old_links = [];
+                old_data_bar_product_produce = [];
+                old_activation_level = {};
+                old_buy_and_sell = [];
+
+                getData(chart, bar_product_produce_chart, chart3d, buy_and_sell);
                 getLiquidData(liquid_chart);
-                getBarProductProduceData(bar_product_produce_chart);
                 setInterval(RealTimeDynamicData, 1000);
-                getGridData(grid_chart);
-                getBar3dData();
-                // setInterval(getDynamicData, 1000);
             }
         );
-        function getData() {
+
+        function getData(chart, bar_product_produce_chart, chart3d, buy_and_sell) {
             $.ajax({
                 type: "GET",
                 url: "http://127.0.0.1:5000/GraphChart",
                 dataType: "json",
                 success: function (result) {
-                    chart.setOption(result);
+                    console.log(result);
+                    //  initial for graph, contract signed
+                    chart.setOption($.parseJSON(result.graph));
                     old_links = chart.getOption().series[0].links;
-                }
-            });
-        }
 
-        function getDynamicData() {
-            $.ajax({
-                type: "GET",
-                url: "http://127.0.0.1:5000/GraphDynamicData",
-                dataType: "json",
-                success: function (result) {
-                    for (var edge in result){
-                        old_links.push({source:result[edge].source, target:result[edge].target});
-                    }
-                    chart.setOption({
-                        series: [{links: old_links}]
-                    });
-                }
-            });
-        }
-        function getBarProductProduceData(){
-            $.ajax({
-                type: "GET",
-                url: "http://127.0.0.1:5000/BarProcutProduce",
-                dataType: "json",
-                success: function (result) {
-                    bar_product_produce_chart.setOption(result);
-                    old_data_bar_product_produce = bar_product_produce_chart.getOption();
-                    console.log("old_data_liquid"+old_data_bar_product_produce);
+                    // initial for bar product produce
+                    bar_product_produce_chart.setOption($.parseJSON(result.product));
+                    old_data_bar_product_produce = bar_product_produce_chart.getOption().series;
+
+                    // initial for activation level
+                    chart3d.setOption($.parseJSON(result.activation_level));
+                    old_activation_level = chart3d.getOption().series;
+                    //  initial for buy and sell
+                    buy_and_sell.setOption($.parseJSON(result.buy_and_sell));
+                    old_buy_and_sell = buy_and_sell.getOption().series;
+
+                    //  initial for breach
+
+                    //  initial for negotiation
                 }
             });
         }
@@ -201,7 +194,8 @@
                     $("#current_step").html(result.current_step);
                     $("#runningtime").html(result.runningtime);
                     $("#market_size_total").html(result.market_size_total); 
-
+                    
+                    // update graph contract signed 
                     for (var edge in result.graph_result){
                         old_links.push({source:result.graph_result[edge].source, target:result.graph_result[edge].target});
                     }
@@ -215,6 +209,64 @@
                     liquid_chart.setOption({
                         series: [{data: old_data_liquid}]
                     });
+
+                    //  update product produce 
+                    for (var factory in old_data_bar_product_produce) {
+                        name = old_data_bar_product_produce[factory].name;
+                        old_data = old_data_bar_product_produce[factory].data;
+                        new_data = []
+                        $.each(result.product_produce[name], function(index, value){
+                            new_data.push(old_data[index] + value);
+                        });
+                        old_data_bar_product_produce[factory].data = new_data;
+                    }
+                    bar_product_produce_chart.setOption(
+                            {series: old_data_bar_product_produce}
+                        );
+
+                    //  TODO update activation level
+                    old_data = old_activation_level[0].data;
+                    $.each(old_data, function(index, value){
+                        if (value[0] == result.current_step){
+                            console.log("result activation_level and new result");
+                            new_activation_level = result.activation_level[value[1]]
+                            console.log("new_activation_level");
+                            console.log(new_activation_level);
+                            old_data[index][2] = value[1] + result.activation_level[value[1]];
+
+                        }
+                    });
+
+                    chart3d.setOption({series: [{"data":old_data}]});
+
+                    //  update buy and sell 
+                    // data = result.buyer_and_seller;
+                    // for (var product in old_buy_and_sell) {
+                    //     name = old_buy_and_sell[product].name;
+                    //     type = old_buy_and_sell[product].type;
+                    //     old_data = old_buy_and_sell[product].data;
+                    //     if ( type == 'bar') {
+                    //         stack = old_buy_and_sell[product].stack;
+                    //         new_data = [];
+                    //         $.each(result.buyer_and_seller[stack][name], function(index, value){
+                    //             new_data.push(old_data[index] + value);
+                    //         });
+                    //         old_buy_and_sell[product].data = new_data;
+                    //     } 
+                    
+                    // console.log("old buy and sell");
+                    // console.log(old_buy_and_sell);
+                    // buy_and_sell.setOption(
+                    //     {
+                    //         series: old_buy_and_sell
+                    //     }
+                    // );
+
+                    //  TODO update breach
+
+                    //  TODO update negotiation
+
+                // }
                 },
                 error: function (result){
                     console.log('real time dynamic data failure!')
@@ -222,31 +274,5 @@
             });
 
         }
-        function getGridData() {
-            $.ajax({
-                type: "GET",
-                url: "http://127.0.0.1:5000/Grid",
-                dataType: "json",
-                success: function (result) {
-                    grid_chart.setOption(result);
-                    // old_data = chart.getOption().series[0].data;
-                }
-            });
-        }
-
-        function getBar3dData() {
-            $.ajax({
-                type: "GET", 
-                url: "http://127.0.0.1:5000/Bar3dData",
-                dataType: "json",
-                success: function (result) {
-                    var chart3d = echarts.init(document.getElementById('activation'),  'white', {renderer: 'canvas'});
-                    // console.log(result)
-                    // chart3d.setOption({
-                    //     series: [{type:result.type}]
-                    // });
-                    chart3d.setOption(result)
-                }
-            });
-        }
+    
     </script>

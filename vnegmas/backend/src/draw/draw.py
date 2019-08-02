@@ -73,26 +73,12 @@ def _liquid_process() -> Liquid:
     return c
 
 
-def _bar_product_produce(config: dict = None) -> Bar:
+def _bar_product_produce(products, factories, data, config: dict = None) -> Bar:
+    b = Bar().add_xaxis(products)
+    for index, f in enumerate(factories):
+        b = b.add_yaxis(f, data[index], stack="stack1")
     c = (
-        Bar()
-        .add_xaxis(
-            [
-                "Product 1",
-                "Product 2",
-                "Product 3",
-                "Product 4",
-                "Product 5",
-                "Product 6",
-            ]
-        )
-        .add_yaxis("Factory 1", [10, 10, 10, 10, 50, 10], stack="stack1")
-        .add_yaxis("Factory 2", [10, 10, 10, 100, 100, 10], stack="stack1")
-        .add_yaxis("Factory 3", [100, 10, 10, 10, 50, 10], stack="stack1")
-        .add_yaxis("Factory 4", [10, 10, 100, 10, 50, 10], stack="stack1")
-        .add_yaxis("Factory 5", [10, 100, 10, 10, 50, 10], stack="stack1")
-        .add_yaxis("Factory 6", [10, 10, 10, 10, 50, 10], stack="stack1")
-        .set_global_opts(
+        b.set_global_opts(
             title_opts=opts.TitleOpts(title=""),
             legend_opts=opts.LegendOpts(
                 orient="vertical", type_="scroll", pos_left="right"
@@ -102,22 +88,17 @@ def _bar_product_produce(config: dict = None) -> Bar:
     return c
 
 
-def _bar3d_agent_activation() -> Bar3D:
+def _bar3d_agent_activation(steps, factories, data) -> Bar3D:
     import random
     from ..pyecharts import options as opts
     from ..pyecharts.charts import Bar3D
 
-    step = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24".split()
-    factories = (
-        "factory_1 factory_2 factory_3 factory_4 factory_5 factory_6 factory_7".split()
-    )
-    data = [(i, j, random.randint(0, 12)) for i in range(7) for j in range(24)]
     c = (
         Bar3D()
         .add(
             "",
             [[d[1], d[0], d[2]] for d in data],
-            xaxis3d_opts=opts.Axis3DOpts(step, type_="category"),
+            xaxis3d_opts=opts.Axis3DOpts(steps, type_="category"),
             yaxis3d_opts=opts.Axis3DOpts(factories, type_="category"),
             zaxis3d_opts=opts.Axis3DOpts(type_="value"),
         )
@@ -128,58 +109,46 @@ def _bar3d_agent_activation() -> Bar3D:
     )
     return c
 
-
-def _grid_buyer_seller() -> Grid:
+def _grid_buyer_seller(factories, products, data) -> Grid:
     c: Grid = None
+    b = Bar().add_xaxis(factories) 
+    for index, p in enumerate(products):
+        b = b.add_yaxis(p, data['buyer'][index], stack="buyer")
+        b = b.add_yaxis(p, data['seller'][index], stack="seller")
+    
     bar = (
-        Bar()
-        .add_xaxis(
-            [
-                "Factory 1",
-                "Factory 2",
-                "Factory 3",
-                "Factory 4",
-                "Factory 5",
-                "Factory 6",
-            ]
-        )
-        .add_yaxis("product 1", [10, 100, 10, 10, 50, 10], stack="buyer")
-        .add_yaxis("product 2", [10, 100, 10, 10, 50, 10], stack="buyer")
-        .add_yaxis("product 3", [10, 100, 10, 10, 50, 10], stack="buyer")
-        .add_yaxis("product 4", [10, 100, 10, 10, 50, 10], stack="buyer")
-        .add_yaxis("product 1", [10, 10, 10, 10, 50, 10], stack="seller")
-        .add_yaxis("product 2", [10, 10, 10, 10, 50, 10], stack="seller")
-        .add_yaxis("product 3", [10, 10, 10, 10, 50, 10], stack="seller")
-        .add_yaxis("product 4", [10, 10, 10, 10, 50, 10], stack="seller")
+        b
     )
+    buyer_volume = []
+    seller_volume = []
+    for index, f in enumerate(factories):
+        _buyer_volume = 0
+        for p in data['buyer']:
+            _buyer_volume += p[index]
+        buyer_volume.append(_buyer_volume)
+
+    for index, f in enumerate(factories):
+        _seller_volume = 0
+        for p in data['seller']:
+            _seller_volume += p[index]
+        seller_volume.append(_seller_volume)    
+        
     line = (
         Line()
         .add_xaxis(
-            [
-                "Factory 1",
-                "Factory 2",
-                "Factory 3",
-                "Factory 4",
-                "Factory 5",
-                "Factory 6",
-            ]
+            factories
         )
         .add_yaxis(
             "Buyer Volume",
-            [10 * 4, 100 * 4, 10 * 4, 10 * 4, 50 * 4, 10 * 4],
+            buyer_volume,
             linestyle_opts=opts.LineStyleOpts(width=2),
         )
         .add_yaxis(
             "Seller Volume",
-            [10 * 4, 10 * 4, 10 * 4, 10 * 4, 50 * 4, 10 * 4],
+            seller_volume,
             linestyle_opts=opts.LineStyleOpts(width=2),
         )
     )
-    # c = (
-    #     Grid()
-    #     .add(buyer, grid_opts=opts.GridOpts(pos_left="55%"))
-    #     .add(seller, grid_opts=opts.GridOpts(pos_right="55%"))
-    # )
     bar.overlap(line)
     return bar
 

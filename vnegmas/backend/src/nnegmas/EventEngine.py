@@ -136,6 +136,8 @@ class Public_NegmasAccount:
             "miners": miners,
             "contracts": contracts,
             "market_size_total": world._stats["_market_size_total"][-1],
+            "breach": [],
+            "negotiation": []
         }
         return public_dic
 

@@ -53,6 +53,10 @@ class ShowProcess:
             self._world_recall_reuslt_dict["miners"] = "None"
         if "market_size_total" not in self._world_recall_reuslt_dict:
             self._world_recall_reuslt_dict["market_size_total"] = "None"
+        if "breach" not in self._world_recall_reuslt_dict:
+            self._world_recall_reuslt_dict['breach'] = []
+        if "negotiation"  not in self._world_recall_reuslt_dict:
+            self._world_recall_reuslt_dict["negotiation"] = []
 
     def iter_frame(self):
         step = 0
@@ -69,7 +73,10 @@ class ShowProcess:
             miners = self._world_recall_reuslt_dict["miners"]
             contracts = self._world_recall_reuslt_dict["contracts"]
             market_size_total = self._world_recall_reuslt_dict["market_size_total"]
-            yield [step_information, contracts, scmlworld, market_size_total]
+            # TODO Get Breach, Negotiation
+            breach = self._world_recall_reuslt_dict['breach']
+            negotiation = self._world_recall_reuslt_dict["negotiation"]
+            yield [step_information, contracts, scmlworld, market_size_total, breach, negotiation]
             step += 1
 
     def get_nodes(self):

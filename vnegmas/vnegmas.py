@@ -95,6 +95,17 @@ class Setup_Graph:
 
 
 class VNegmas(object):
+    """
+        The main Class of VNEGMAS, router and interaction between backend of frontend
+        
+        .. versionadd:: v0.1.1
+            ...
+        
+        .. versionadd:: v0.2.1
+            function offline_demo is added, parameter check_init_graph is added into __init__
+
+        : param check_init_graph: checked the status in the `real_time` mode
+    """
     def __init__(
         self,
         g: Union[DiGraph, None] = None,
@@ -137,6 +148,7 @@ class VNegmas(object):
         self.worldname = "None"
         self.template_dir = os.path.join(os.path.dirname(__file__), template_folder)
         self.stats_dir = os.path.join(os.path.dirname(__file__), static_folder)
+        self.check_init_graph = False
         # import pdb; pdb.set_trace()
         # import pdb; pdb.set_trace()
         self.a = FlaskAppWrapper(self.name, template_folder=self.template_dir, static_folder=self.stats_dir)
@@ -188,15 +200,13 @@ class VNegmas(object):
             rule="/real_time", endpoint="real_time", view_func=self.real_time
         )
         self.a.add_endpoint(
+            rule="/offline",  endpoint="offline", view_func=self.offline_demo
+        )
+        self.a.add_endpoint(
             rule="/GraphChart", endpoint="GraphChart", view_func=self._graph_with_opts
         )
         self.a.add_endpoint(
             rule="/Liquid", endpoint="Liquid", view_func=self._get_liquid_chart
-        )
-        self.a.add_endpoint(
-            rule="/BarProcutProduce",
-            endpoint="BarProcutProduce",
-            view_func=self._get_bar_product_produce,
         )
         self.a.add_endpoint(
             rule="/RealTimeDynamicData",
@@ -204,12 +214,6 @@ class VNegmas(object):
             view_func=self.dynamic_real_time,
         )
         # self.a.add_endpoint(rule='/GraphDynamicData', endpoint='GraphDynamicData', view_func=self._graph_with_opts_dyn)
-        self.a.add_endpoint(
-            rule="/Bar3dData", endpoint="Bar3dData", view_func=self._bar3d_with_opts
-        )
-        self.a.add_endpoint(
-            rule="/Grid", endpoint="Grid", view_func=self._get_buyer_seller
-        )
         self.a.add_endpoint(rule="/run", endpoint="run", view_func=self._run_negmas)
         self.a.add_endpoint(
             rule="/saveSystemConfig",
@@ -251,6 +255,32 @@ class VNegmas(object):
     def real_time(self):
         content = self._get_real_time_config()
         return render_template("_real_time.html", content=content)
+
+    #TODO offline demo for ijcai, receive data from the log and related statistic files
+    #TODO Use demo file from NEGMAS
+    def offline_demo(self):
+        """
+            Just a offline demo that used for shown at the conference IJCAI
+            .. versionadd:: v0.2.1
+                the function offline_demo is added
+        """
+        def contract_signed():
+            pass
+        
+        def product_produce():
+            pass
+        
+        def activation_level():
+            pass
+    
+        contract_signed = contract_signed()
+        product_produce = product_produce()
+        activation_level = activation_level()
+
+        charts = [contract_signed] 
+        content = [c.render_embed() for c in charts]
+
+        return render_template("_offline_demo.html", content=content)
 
     def my_config(self):
         return render_template("_config_my.html")
@@ -305,6 +335,9 @@ class VNegmas(object):
         self.configSetUp.save_my_config(request.data)
 
     def dynamic_real_time(self):
+        """
+            update the charts in the `real time` mode
+        """
         def send_result(contracts=None):
             g = negmas_draw.negmas_add_edges(
                 self.config.graph,
@@ -372,6 +405,14 @@ class VNegmas(object):
         result["market_size_total"] = self.market_size_total
         result["current_step"] = self.current_step
         result["runningtime"] = str(self.runningtime)
+          # DEMO USED FOR IJCAI
+        if self.check_init_graph:
+            print(f"node names are {self.node_name}")
+            from vnegmas.backend.api.data import Faker
+            result["product_produce"] = Faker.get_product_factories_produce_dynamic(factories=self.factories)
+            # result["buyer_and_seller"] = Faker.get_buy_and_sell_data_dynamic(factories=self.factories)
+            result["activation_level"] = Faker.get_activations_level_dynamic(factories=self.factories)
+        
         return jsonify(result)
 
     def _run_negmas(self):
@@ -389,8 +430,8 @@ class VNegmas(object):
         return jsonify({"message": "set run task"})
 
     @staticmethod
-    def _get_bar_product_produce():
-        c = draw.bar_product_produce()
+    def _get_bar_product_produce(products, factories, data):
+        c = draw.bar_product_produce(products, factories, data)
         return c.dump_options()
 
     @staticmethod
@@ -399,23 +440,33 @@ class VNegmas(object):
         return c.dump_options()
 
     @staticmethod
-    def _bar3d_with_opts():
-        c = draw.bar3d_agent_activation()
+    def _activation_level(steps, factories, data):
+        c = draw.bar3d_agent_activation(steps, factories, data)
         return c.dump_options()
 
     @staticmethod
-    def _get_buyer_seller():
-        return draw.grid_buyer_seller().dump_options()
+    def _get_buyer_seller(factories, products, data):
+        c = draw.grid_buyer_seller(factories, products, data)
+        return c .dump_options()
 
     def _get_layer_sizes(self):
         return [len(node) for node in self.node_name]
 
     def _graph_with_opts(self):
+        """
+                .. versionadded: v0.1.1
+                    used for just initial the Graph (contract signed)
+                
+                .. versionadded: v0.2.1
+                    not just used for Graph, also intial for all of the charts in the page of real time, 
+                    product, activation_level, buy_and_sell, breach, negotiations and so on.
+        """
         # print('_graph_with_opts')
 
         nnegmas.glovar.event.wait()
         # print("receive result {}".format(nnegmas.glovar.world_recall_reuslt_dict))
         self.check_init_graph = True
+        #  get a list of of all nodes
         nodes = self.show.get_nodes()
         # print('nodes:{}'.format(nodes))
         g = DiGraph()
@@ -431,7 +482,33 @@ class VNegmas(object):
         # print('nodes:{}'.format(self.config.graph.nodes))
         config = {"emphasis_linestyleopts": self.config.linestyleopts[0]}
         c = draw.graph_contracted_signed(config, self.config.graph.nodes)
-        return c.dump_options()
+
+
+        # DEMO USED FOR IJCAI
+        from vnegmas.backend.api.data import Faker
+        factories = []
+        for layer in self.node_name[1:-1]:
+            factories +=layer
+        print(f"factories is {factories}")
+        self.factories = factories
+        self.products = Faker.products
+        self.total_step = Faker.total_step
+
+        # Product Demo
+        p =self. _get_bar_product_produce(self.products, factories, Faker.get_product_factories_produce(factories=factories))
+        # Activation level Demo
+        a_l = self._activation_level(self.total_step, factories, Faker.get_activations_level(factories=factories))
+
+        # Buy and Sell Demo
+        b_a_s = self._get_buyer_seller(factories, self.products, Faker.get_buy_and_sell_data(factories=factories))
+
+        # TODO Breach
+
+        # TODO Negotiation
+
+        content = {"graph": c.dump_options(), "product": p, "activation_level":a_l, "buy_and_sell":b_a_s, "breach":[], "negotiations":[]}
+       
+        return json.dumps(content)
 
     def _graph_with_opts_dyn(self):
         def send_result(contracts=None):
