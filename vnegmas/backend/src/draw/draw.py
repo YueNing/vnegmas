@@ -161,6 +161,13 @@ def _get_specific_type_chart(data, type):
         )
     return c
 
+class VNemgasCharts:
+    """
+        ..versionadd: v0.2.1
+        Used For Register and Unregister for all charts that can be used in VNEGMAS COME FROM NEGMAS STATS
+        The Details, please see the config file, root path, settings, parameter: DEFAULT_CHARTS
+    """
+    
 if __name__ == "__main__":
     c = _liquid_process()
     c.render()

@@ -12,11 +12,11 @@ class ManagerChart:
        
        :param config_file_path: tell class where the real time config file is stored
     """
-    def __init__(self, config_file_path):
+    def __init__(self, config_file_path="/home/naodongbanana/Document/vnegmas/vnegmas/backend/src/configs/real_time.ini"):
         self.config_file_path = config_file_path
         self.config = configparser.ConfigParser()
-        self.absolute_path = os.path.dirname(__file__) + config_file_path
-        self.config.read(os.path.join(os.path.dirname(__file__) + config_file_path))
+        self.absolute_path = config_file_path
+        self.config.read(self.absolute_path )
     
     def register(self, charts=None, modes=None):
         """ Register new charts into config file

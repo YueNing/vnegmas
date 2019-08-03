@@ -45,7 +45,7 @@ def _get_web_config(
             )
     return config
 
-def _get_real_time_config(filename: str = "/real_time.ini"):
+def _get_real_time_config(filename: str = "/home/naodongbanana/Document/vnegmas/vnegmas/backend/src/configs/real_time.ini"):
     mc = ManagerChart(filename)
     return mc
 

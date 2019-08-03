@@ -14,6 +14,7 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 from hachiko.hachiko import AIOWatchdog, AIOEventHandler
 import asyncio
+from negmas.situated import StatsMonitor, WorldMonitor
 
 class NegmasMonitorFile(AIOEventHandler):
     """
@@ -120,9 +121,14 @@ async def watch_fs(path):
         await asyncio.sleep(1)
     watch.stop()
     print("Finish monitoring task")
-
-class NegmasMonitorMemory():
-    pass
+    
+class NegmasMonitorMemory(StatsMonitor,):
+    
+    def init(self, stats, world_name):
+        print(f"The World {world_name} is monitor and init stats is {stats}")
+    
+    def step(self, stats,  world_name):
+        print(f"step function is executed in world {world_name}, the stats are {stats}")
 
 if __name__ == "__main__":
     start = time.time()
