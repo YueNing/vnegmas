@@ -144,7 +144,7 @@
         function getData(chart, bar_product_produce_chart, chart3d, buy_and_sell) {
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:5000/GraphChart",
+                url: "/GraphChart",
                 dataType: "json",
                 success: function (result) {
                     console.log(result);
@@ -173,7 +173,7 @@
         function getLiquidData() {
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:5000/Liquid",
+                url: "/Liquid",
                 dataType: "json",
                 success: function (result) {
                     liquid_chart.setOption(result);

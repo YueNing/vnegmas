@@ -4,9 +4,10 @@ import json
 class OfflineData:
     """
         All of datas that can be shown in  VNEGMAS
+        yue_ning1085
     """
 
-    def __init__(self, stats_file_path="/home/naodongbanana/Document/vnegmas/test/logs/tournaments/20190802-2139563Ym-stage-1e+00/20190802-213956nUKr_a2b8-a2b8.00001.00001/stats.json"):
+    def __init__(self, stats_file_path="/home/yue_ning1085/vnegmas/test/logs/tournaments/20190802-2139563Ym-stage-1e+00/20190802-213956nUKr_a2b8-a2b8.00001.00001/stats.json"):
         self.stats_file_path = stats_file_path
 
     def _loads(self):

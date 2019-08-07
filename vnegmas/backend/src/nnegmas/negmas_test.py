@@ -40,7 +40,7 @@ def world_progress_callback(world: SCMLWorld):
                 pass
             else:
                 glovar.event.set()
-                # print('set event finished data {}'.format(glovar.world_recall_reuslt_dict))
+               # print('set event finished data {}'.format(glovar.world_recall_reuslt_dict))
     # print('set event finished data {}'.format(glovar.world_recall_reuslt_dict))
     print("finish step{}".format(world.current_step))
     ee.stop()

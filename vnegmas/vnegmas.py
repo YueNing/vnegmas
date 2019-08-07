@@ -270,7 +270,7 @@ class VNegmas(object):
         offline_data = OfflineData()
         offline_data._loads()
         selected_charts = {key: offline_data.stats[key]  for key in OFFLINE_DEFAULT_CHARTS}
-        print(f"selected charts {selected_charts}")
+        #print(f"selected charts {selected_charts}")
         
         data = {}
         content=[]
@@ -462,10 +462,8 @@ class VNegmas(object):
                     not just used for Graph, also intial for all of the charts in the page of real time, 
                     product, activation_level, buy_and_sell, breach, negotiations and so on.
         """
-        # print('_graph_with_opts')
-
         nnegmas.glovar.event.wait()
-        # print("receive result {}".format(nnegmas.glovar.world_recall_reuslt_dict))
+        #print("receive result {}".format(nnegmas.glovar.world_recall_reuslt_dict))
         self.check_init_graph = True
         #  get a list of of all nodes
         nodes = self.show.get_nodes()
@@ -508,7 +506,7 @@ class VNegmas(object):
         # TODO Negotiation
 
         content = {"graph": c.dump_options(), "product": p, "activation_level":a_l, "buy_and_sell":b_a_s, "breach":[], "negotiations":[]}
-       
+        print(f"Graph content is {content}") 
         return json.dumps(content)
 
     def _graph_with_opts_dyn(self):
