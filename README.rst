@@ -6,6 +6,9 @@
 
 .. _index:
 
+Contact: 
+   - n1085633848@outlook.com (Yue Ning)
+   - tim.zander@kit.edu(Tim Zander)
 ####################################
 Welcome to VNEMGAS's documentation!
 ####################################
