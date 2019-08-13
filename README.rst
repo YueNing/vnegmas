@@ -6,6 +6,15 @@
 
 .. _index:
 
+Important use quickly now, python version 3.7
+
+.. code-block:: bash
+
+  git clone https://github.com/YueNing/vnegmas.git
+  pip install -r requirements.txt
+  cd vnegmas/test
+  python ./quickstart.py
+
 Contact: 
    - n1085633848@outlook.com (Yue Ning)
    
