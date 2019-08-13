@@ -24,7 +24,7 @@ class FlaskAppWrapper(object):
         self.app = Flask(name, template_folder=template_folder, static_folder=static_folder)
 
     def run(self):
-        return self.app.run(host="0.0.0.0", port="80")
+        return self.app.run()
 
     def add_endpoint(
         self, rule, endpoint=None, view_func=None, handler=None, methods=["GET"]
