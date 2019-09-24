@@ -16,7 +16,7 @@ Important use quickly now, python version 3.7
   python ./quickstart.py
 
 Contact: 
-   - n1085633848@outlook.com (Yue Ning)
+   - uqveo@student.kit.edu (Yue Ning)
    
    - tim.zander@kit.edu (Tim Zander)
    
