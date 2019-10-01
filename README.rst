@@ -93,7 +93,7 @@ Run VNEMGAS
     vnegmas = VNegmas(name="VNegmas")
     vnegmas.run()
 
-For Data Analyser (still in development)
+For Data Analysts (still in development)
 ==========================================
 
 | Introduction: Data Analyser need to analyse data that received from NEGMAS,
