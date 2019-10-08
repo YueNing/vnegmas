@@ -6,6 +6,8 @@
 
 .. _index:
 
+**Now in Development! in this Branch, Use Dash instead of self designed page, add more logic page and controllable function!!`**
+
 Important use quickly now, python version 3.7
 
 .. code-block:: bash
